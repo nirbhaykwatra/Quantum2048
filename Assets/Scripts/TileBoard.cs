@@ -10,12 +10,43 @@ public class TileBoard : MonoBehaviour
     private TileGrid grid;
     private List<Tile> tiles;
     private bool waiting;
+    private int tunnel_merge_1;
+    private GameObject tunnelingPopup;
+    private GameObject infoButton;
 
     private void Awake()
     {
         grid = GetComponentInChildren<TileGrid>();
         tiles = new List<Tile>(16);
+        tunnel_merge_1 = 0;
+
+        // Find the Canvas first
+        GameObject canvas = GameObject.Find("Canvas");
+        
+        if (canvas != null)
+        {
+            // Find Tunnelling1 under the Canvas
+            tunnelingPopup = canvas.transform.Find("Tunnelling1")?.gameObject;
+
+            // Find Info Button under the Canvas
+            infoButton = canvas.transform.Find("Info Button")?.gameObject;
+
+            if (tunnelingPopup != null && infoButton != null)
+            {
+                tunnelingPopup.SetActive(false); // Ensure it starts inactive
+                infoButton.SetActive(false); // Ensure it starts inactive
+            }
+            else
+            {
+                Debug.LogWarning("Either Tunnelling1 or Info Button GameObjects were not found under Canvas!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Canvas GameObject not found in the scene!");
+        }
     }
+
 
     public void ClearBoard()
     {
@@ -71,7 +102,7 @@ public class TileBoard : MonoBehaviour
         }
 
         if (changed) {
-            StartCoroutine(WaitForChanges());
+            StartCoroutine(WaitForChangesCoroutine());
         }
     }
 
@@ -133,6 +164,13 @@ public class TileBoard : MonoBehaviour
 
     private void TunnelingMergeTiles(Tile a, Tile blocker, Tile b)
     {
+        if (tunnel_merge_1 == 0 && tunnelingPopup != null)
+        {
+            tunnel_merge_1 = 1;
+            tunnelingPopup.SetActive(true);
+            infoButton.SetActive(true);
+        }
+
         tiles.Remove(a);
         a.Merge(b.cell);
 
@@ -158,7 +196,7 @@ public class TileBoard : MonoBehaviour
         return -1;
     }
 
-    private IEnumerator WaitForChanges()
+    private IEnumerator WaitForChangesCoroutine()
     {
         waiting = true;
 
