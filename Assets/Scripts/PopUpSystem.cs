@@ -50,8 +50,7 @@ public class PopUpSystem : MonoBehaviour
         Debug.Log("popup script accessed");
         
         tunnelingPopup.SetActive(true);
-        infoButton.SetActive(true);
-
+        
         Pause();
     }
 
@@ -61,11 +60,13 @@ public class PopUpSystem : MonoBehaviour
         {
             Debug.Log("stopping time");
             Time.timeScale = 0;
+            infoButton.SetActive(false);
         }
         else
         {
             Debug.Log("starting time");
             Time.timeScale = 1;
+            infoButton.SetActive(true);
         }
     }
 }
