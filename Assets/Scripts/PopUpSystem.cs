@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// This script sperates the popup behavior into a seperate script from TileBoard so all popup behavior can be independent in the future.
+// This script sperates the popup behavior into a seperate script from TileBoard so all popup behavior can be independent
+// and easily accessed. 
 
 public class PopUpSystem : MonoBehaviour
 {
-
+    // initializing popup gameobjects
     private GameObject tunnelingPopup;
     private GameObject infoButton; 
     
@@ -15,7 +16,6 @@ public class PopUpSystem : MonoBehaviour
     private void Awake()
     {
 
-        //Tunneling();
         // Find the Canvas first
         GameObject canvas = GameObject.Find("Canvas");
 
@@ -48,7 +48,7 @@ public class PopUpSystem : MonoBehaviour
     {
         // debug to check that script has been successfully accessed. 
         Debug.Log("popup script accessed");
-        
+        // activate the info popup and pause. 
         tunnelingPopup.SetActive(true);
         
         Pause();
@@ -56,15 +56,18 @@ public class PopUpSystem : MonoBehaviour
 
        public void Pause()
     {
+        // Checks to see if game is paused. will pause if unpaused, and unpause when paused. 
         if (Time.timeScale == 1)
         {
             Debug.Log("stopping time");
+        
             Time.timeScale = 0;
             infoButton.SetActive(false);
         }
         else
         {
             Debug.Log("starting time");
+           
             Time.timeScale = 1;
             infoButton.SetActive(true);
         }
