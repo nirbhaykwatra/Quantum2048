@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// This script sperates the popup behavior into a seperate script from TileBoard so all popup behavior can be independent in the future.
+
 public class PopUpSystem : MonoBehaviour
 {
 
@@ -43,8 +46,26 @@ public class PopUpSystem : MonoBehaviour
 
        public void Tunneling()
     {
+        // debug to check that script has been successfully accessed. 
         Debug.Log("popup script accessed");
+        
         tunnelingPopup.SetActive(true);
         infoButton.SetActive(true);
+
+        Pause();
+    }
+
+       public void Pause()
+    {
+        if (Time.timeScale == 1)
+        {
+            Debug.Log("stopping time");
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Debug.Log("starting time");
+            Time.timeScale = 1;
+        }
     }
 }
