@@ -57,18 +57,20 @@ public class PopUpSystem : MonoBehaviour
        public void Pause()
     {
         // Checks to see if game is paused. will pause if unpaused, and unpause when paused. 
+
+        // NOTE!!! time scale pauses animations. Have to find a work around for qubit to animate 
         if (Time.timeScale == 1)
         {
             Debug.Log("stopping time");
         
-            Time.timeScale = 0;
+          //  Time.timeScale = 0;
             infoButton.SetActive(false);
         }
         else
         {
             Debug.Log("starting time");
            
-            Time.timeScale = 1;
+           // Time.timeScale = 1;
             infoButton.SetActive(true);
         }
     }
