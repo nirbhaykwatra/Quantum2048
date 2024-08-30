@@ -13,12 +13,15 @@ public class TileBoard : MonoBehaviour
     private int tunnel_merge_1;
     private GameObject tunnelingPopup;
     private GameObject infoButton;
+    PopUpSystem popUpSystem;
+  
 
     private void Awake()
     {
         grid = GetComponentInChildren<TileGrid>();
         tiles = new List<Tile>(16);
         tunnel_merge_1 = 0;
+        popUpSystem = GameObject.Find("PopUpManager").GetComponent<PopUpSystem>();
 
         // Find the Canvas first
         GameObject canvas = GameObject.Find("Canvas");
@@ -166,9 +169,10 @@ public class TileBoard : MonoBehaviour
     {
         if (tunnel_merge_1 == 0 && tunnelingPopup != null)
         {
+            // access the tunelling script from PopUpSystem to activate the popup
             tunnel_merge_1 = 1;
-            tunnelingPopup.SetActive(true);
-            infoButton.SetActive(true);
+            popUpSystem.Tunneling();
+           
         }
 
         tiles.Remove(a);
