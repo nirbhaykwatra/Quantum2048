@@ -15,7 +15,7 @@ public class PopUpSystem : MonoBehaviour
 
     private void Awake()
     {
-
+        
         // Find the Canvas first
         GameObject canvas = GameObject.Find("Canvas");
 
@@ -26,21 +26,13 @@ public class PopUpSystem : MonoBehaviour
 
             // Find Info Button under the Canvas
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
-
-            if (tunnelingPopup != null && infoButton != null)
-            {
-                tunnelingPopup.SetActive(false); // Ensure it starts inactive
-                infoButton.SetActive(false); // Ensure it starts inactive
-            }
-            else
-            {
-                Debug.LogWarning("Either Tunnelling1 or Info Button GameObjects were not found under Canvas!");
-            }
+            
         }
         else
         {
             Debug.LogWarning("Canvas GameObject not found in the scene!");
         }
+        
     }
 
 
@@ -62,7 +54,8 @@ public class PopUpSystem : MonoBehaviour
         if (Time.timeScale == 1)
         {
             Debug.Log("stopping time");
-        
+
+          // commenting out timescale pausing for now 
           //  Time.timeScale = 0;
             infoButton.SetActive(false);
         }

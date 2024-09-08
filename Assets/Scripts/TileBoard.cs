@@ -22,7 +22,7 @@ public class TileBoard : MonoBehaviour
         tiles = new List<Tile>(16);
         tunnel_merge_1 = 0;
         popUpSystem = GameObject.Find("PopUpManager").GetComponent<PopUpSystem>();
-
+    
         // Find the Canvas first
         GameObject canvas = GameObject.Find("Canvas");
         
@@ -33,7 +33,7 @@ public class TileBoard : MonoBehaviour
 
             // Find Info Button under the Canvas
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
-
+            
             if (tunnelingPopup != null && infoButton != null)
             {
                 tunnelingPopup.SetActive(false); // Ensure it starts inactive
@@ -43,12 +43,15 @@ public class TileBoard : MonoBehaviour
             {
                 Debug.LogWarning("Either Tunnelling1 or Info Button GameObjects were not found under Canvas!");
             }
+            
         }
         else
         {
             Debug.LogWarning("Canvas GameObject not found in the scene!");
         }
+    
     }
+    
 
 
     public void ClearBoard()
