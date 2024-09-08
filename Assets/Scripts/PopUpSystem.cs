@@ -38,8 +38,7 @@ public class PopUpSystem : MonoBehaviour
 
        public void Tunneling()
     {
-        // debug to check that script has been successfully accessed. 
-        Debug.Log("popup script accessed");
+
         // activate the info popup and pause. 
         tunnelingPopup.SetActive(true);
         
@@ -48,12 +47,10 @@ public class PopUpSystem : MonoBehaviour
 
        public void Pause()
     {
-        // Checks to see if game is paused. will pause if unpaused, and unpause when paused. 
-
-        // NOTE!!! time scale pauses animations. Have to find a work around for qubit to animate 
-        if (Time.timeScale == 1)
+        // initially this function used timescale to pause the game. Have now switched it to just dealing with teh info button for now.
+        if (tunnelingPopup.activeSelf == true)
         {
-            Debug.Log("stopping time");
+            Debug.Log("popup");
 
           // commenting out timescale pausing for now 
           //  Time.timeScale = 0;
@@ -61,7 +58,7 @@ public class PopUpSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("starting time");
+            Debug.Log("no popup");
            
            // Time.timeScale = 1;
             infoButton.SetActive(true);

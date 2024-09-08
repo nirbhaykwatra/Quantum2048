@@ -159,7 +159,7 @@ public class TileBoard : MonoBehaviour
     private void MergeTiles(Tile a, Tile b)
     {
         tiles.Remove(a);
-        a.Merge(b.cell);
+        a.Merge(b.cell, false);
 
         int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
         TileState newState = tileStates[index];
@@ -179,7 +179,7 @@ public class TileBoard : MonoBehaviour
         }
 
         tiles.Remove(a);
-        a.Merge(b.cell);
+        a.Merge(b.cell, true);
 
         int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
         TileState newState = tileStates[index];

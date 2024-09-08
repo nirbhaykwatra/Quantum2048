@@ -62,12 +62,13 @@ public class Tile : MonoBehaviour
         this.cell.tile = this;     // Point the cell's tile to this tile
 
         // Start the animation coroutine to move the tile to the new cell's position
-        StartCoroutine(Animate(cell.transform.position, false));
+        StartCoroutine(Animate(cell.transform.position, false, false));
     }
 
     // Method to merge the tile with another tile located in a different cell.
     // The original tile is removed upon completion of the merging animation.
-    public void Merge(TileCell cell)
+    // Takes in a bool to detect if tunnelling has occured. 
+    public void Merge(TileCell cell, bool tunnelling)
     {
         if (this.cell != null) {
             this.cell.tile = null; // Unlink the tile from the current cell
@@ -77,12 +78,13 @@ public class Tile : MonoBehaviour
         cell.tile.locked = true;   // Lock the target cell to prevent further movement
 
         // Start the animation coroutine to move the tile to the merging cell and then remove it
-        StartCoroutine(Animate(cell.transform.position, true));
+        StartCoroutine(Animate(cell.transform.position, true, tunnelling));
     }
 
     // Coroutine to animate the movement of the tile to a target position.
     // Takes the target position as 'to' and whether the tile will be destroyed after merging as 'merging'.
-    private IEnumerator Animate(Vector3 to, bool merging)
+    // takes in a bool to detect if tunnelling has occured. 
+    private IEnumerator Animate(Vector3 to, bool merging, bool tunnel)
     {
         float elapsed = 0f;       // Time elapsed since the animation started
         float duration = 0.1f;    // Total duration of the animation
@@ -100,10 +102,20 @@ public class Tile : MonoBehaviour
         // Ensure the tile reaches its target position
         transform.position = to;
 
+        if (tunnel == true)
+        {
+          // here, an animation of some sort or a visual effect should play
+          Debug.Log("Tunnelling Occured");
+        }
+
         // If the tile is merging, destroy it after reaching the final position
         if (merging) {
             Destroy(gameObject);
         }
+      
     }
+
+    // NOTE TO SELF: potentially need to make a sperate function for tunnelling animation.
+    // otherwise, add the animation/effect to the "animation" function
 
 }
