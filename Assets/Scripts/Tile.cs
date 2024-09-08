@@ -68,7 +68,7 @@ public class Tile : MonoBehaviour
     // Method to merge the tile with another tile located in a different cell.
     // The original tile is removed upon completion of the merging animation.
     // Takes in a bool to detect if tunnelling has occured. 
-    public void Merge(TileCell cell, bool tunnelling)
+    public void Merge(TileCell cell, bool tunneling)
     {
         if (this.cell != null) {
             this.cell.tile = null; // Unlink the tile from the current cell
@@ -78,7 +78,7 @@ public class Tile : MonoBehaviour
         cell.tile.locked = true;   // Lock the target cell to prevent further movement
 
         // Start the animation coroutine to move the tile to the merging cell and then remove it
-        StartCoroutine(Animate(cell.transform.position, true, tunnelling));
+        StartCoroutine(Animate(cell.transform.position, true, tunneling));
     }
 
     // Coroutine to animate the movement of the tile to a target position.
@@ -105,7 +105,7 @@ public class Tile : MonoBehaviour
         if (tunnel == true)
         {
           // here, an animation of some sort or a visual effect should play
-          Debug.Log("Tunnelling Occured");
+          Debug.Log("Tunneling Occured");
         }
 
         // If the tile is merging, destroy it after reaching the final position
@@ -115,7 +115,7 @@ public class Tile : MonoBehaviour
       
     }
 
-    // NOTE TO SELF: potentially need to make a sperate function for tunnelling animation.
+    // NOTE TO SELF: potentially need to make a sperate function for tunneling animation.
     // otherwise, add the animation/effect to the "animation" function
 
 }
