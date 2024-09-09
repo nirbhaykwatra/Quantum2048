@@ -6,7 +6,9 @@ public class TileBoard : MonoBehaviour
 {
     public AudioSource src;
     public AudioClip notification_sound_1;
+    // Add a reference to the Tunneling particle effect prefab
     
+    public ParticleSystem tunnelingEffect;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private TileState[] tileStates;
 
@@ -54,8 +56,6 @@ public class TileBoard : MonoBehaviour
         }
     
     }
-    
-
 
     public void ClearBoard()
     {
@@ -175,15 +175,23 @@ public class TileBoard : MonoBehaviour
     {
         if (tunnel_merge_1 == 0 && tunnelingPopup != null)
         {
-            // access the tunelling script from PopUpSystem to activate the popup and the notification sound for the first time
+            // Activate the popup and play notification sound for the first time
             tunnel_merge_1 = 1;
             popUpSystem.Tunneling();
 
             src.clip = notification_sound_1;
             src.Play();
-           
-        }
 
+            if (tunnelingEffect != null)
+            {
+                tunnelingEffect.Play();
+            }
+            else
+            {
+                Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
+            }
+        }
+    
         tiles.Remove(a);
         a.Merge(b.cell, true);
 
