@@ -1580,8 +1580,8 @@ MonoBehaviour:
     object, like an electron, passes through a barrier that it shouldn't be able
     to cross according to classical physics."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e33487d1156db0b4881e82f50fd1e1ae, type: 2}
-  m_sharedMaterial: {fileID: -94200345277445779, guid: e33487d1156db0b4881e82f50fd1e1ae, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7f913209af96e1f42b6bd635c9bfbd3d, type: 2}
+  m_sharedMaterial: {fileID: -9109727166818787896, guid: 7f913209af96e1f42b6bd635c9bfbd3d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1605,8 +1605,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29
-  m_fontSizeBase: 29
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1617,7 +1617,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 40
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

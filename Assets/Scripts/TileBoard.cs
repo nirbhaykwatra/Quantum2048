@@ -175,13 +175,14 @@ public class TileBoard : MonoBehaviour
     {
         if (tunnel_merge_1 == 0 && tunnelingPopup != null)
         {
-            // access the tunelling script from PopUpSystem to activate the popup
+            // access the tunelling script from PopUpSystem to activate the popup and the notification sound for the first time
             tunnel_merge_1 = 1;
             popUpSystem.Tunneling();
+
+            src.clip = notification_sound_1;
+            src.Play();
            
         }
-        src.clip = notification_sound_1;
-        src.Play();
 
         tiles.Remove(a);
         a.Merge(b.cell, true);
