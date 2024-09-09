@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TileBoard : MonoBehaviour
 {
+    public AudioSource src;
+    public AudioClip notification_sound_1;
+    
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private TileState[] tileStates;
 
@@ -177,6 +180,8 @@ public class TileBoard : MonoBehaviour
             popUpSystem.Tunneling();
            
         }
+        src.clip = notification_sound_1;
+        src.Play();
 
         tiles.Remove(a);
         a.Merge(b.cell, true);
