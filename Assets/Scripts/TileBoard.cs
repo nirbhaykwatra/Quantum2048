@@ -7,7 +7,6 @@ public class TileBoard : MonoBehaviour
     public AudioSource src;
     public AudioClip notification_sound_1;
     // Add a reference to the Tunneling particle effect prefab
-    
     public ParticleSystem tunnelingEffect;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private TileState[] tileStates;
