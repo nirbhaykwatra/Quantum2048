@@ -3164,7 +3164,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: X
+  m_text: Continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e33487d1156db0b4881e82f50fd1e1ae, type: 2}
   m_sharedMaterial: {fileID: -94200345277445779, guid: e33487d1156db0b4881e82f50fd1e1ae, type: 2}
@@ -4413,8 +4413,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 137.89333, y: -19}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 87.057, y: 0.0000038147}
+  m_SizeDelta: {x: 135.6559, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2040088116
 MonoBehaviour:
@@ -4488,6 +4488,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2122496512}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: Continue
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4637,6 +4649,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122496511}
+  - component: {fileID: 2122496512}
   m_Layer: 5
   m_Name: Tunnelling1
   m_TagString: tunnelling
@@ -4670,6 +4683,19 @@ RectTransform:
   m_AnchoredPosition: {x: -444.68, y: -158}
   m_SizeDelta: {x: 309.7689, y: 286.6126}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2122496512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122496510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88449c6b6804c3542a9367e62302d8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PausePanel: {fileID: 2122496510}
 --- !u!4 &524400887283205599 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5676613608808544298, guid: 20181e91e8d5f324aa50d1c2d7dc0051, type: 3}
