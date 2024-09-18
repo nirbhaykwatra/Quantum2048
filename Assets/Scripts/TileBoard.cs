@@ -85,7 +85,15 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
-        radialProgress.currentValue = (tunnel_merge_1 - 1) * 20;
+        if (tunnel_merge_1 > 1)
+        {
+            radialProgress.currentValue = (tunnel_merge_1 - 1) * 20;
+        }
+        else
+        {
+            radialProgress.currentValue = 5;
+        }
+
         if (!waiting)
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
