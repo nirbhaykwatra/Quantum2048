@@ -1943,6 +1943,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19b4310b755bd894a999f0202d2f671d, type: 2}
   - {fileID: 11400000, guid: 0a300fade7d43e94abe37c35dc38c0d9, type: 2}
   - {fileID: 11400000, guid: 1be54a437c57bd940a0bc02aae22d9be, type: 2}
+  tunnellingCompetencyCounter: {fileID: 1137877288}
 --- !u!82 &997205598
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2362,7 +2363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1776585486}
-  speed: 5
+  currentValue: 0
 --- !u!1 &1186592816
 GameObject:
   m_ObjectHideFlags: 0

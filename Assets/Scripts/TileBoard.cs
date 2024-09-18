@@ -19,6 +19,8 @@ public class TileBoard : MonoBehaviour
     private GameObject tunnelingPopup;
     private GameObject infoButton;
     PopUpSystem popUpSystem;
+    RadialProgress radialProgress;
+    [SerializeField] GameObject tunnellingCompetencyCounter;
   
 
     private void Awake()
@@ -38,6 +40,9 @@ public class TileBoard : MonoBehaviour
 
             // Find Info Button under the Canvas
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
+
+            // Find the RadialProgress GameObject under the Canvas
+            radialProgress = tunnellingCompetencyCounter.GetComponent<RadialProgress>();
             
             if (tunnelingPopup != null && infoButton != null)
             {
@@ -80,6 +85,7 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
+        radialProgress.currentValue = (tunnel_merge_1 - 1) * 20;
         if (!waiting)
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
@@ -176,7 +182,6 @@ public class TileBoard : MonoBehaviour
         if (tunnel_merge_1 == 0 && tunnelingPopup != null)
         {
             // Activate the popup and play notification sound for the first time
-            tunnel_merge_1 = 1;
             popUpSystem.Tunneling();
 
             src.clip = notification_sound_1;
@@ -191,6 +196,7 @@ public class TileBoard : MonoBehaviour
                 Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
             }
         }
+        tunnel_merge_1 = tunnel_merge_1 + 1;
     
         tiles.Remove(a);
         a.Merge(b.cell, true);
