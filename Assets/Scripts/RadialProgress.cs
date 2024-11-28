@@ -7,10 +7,12 @@ public class RadialProgress : MonoBehaviour
     [SerializeField] private Image image; // Ensure this is set in the Inspector or dynamically
     public float currentValue;
 
-    // Declare the Icon Line, Icon Dialog, and RadialProgress variables at the class level
+    // Declare variables at the class level
     private GameObject iconLine;
     private GameObject iconDialog;
     private GameObject radialProgress;
+    private GameObject tunnelling1;  // Corrected: Added tunnelling1
+    private GameObject tunnelling2;  // Corrected: Added tunnelling2
 
     private bool isProgressComplete = false; // Add this flag
 
@@ -22,6 +24,30 @@ public class RadialProgress : MonoBehaviour
         // Check if Canvas is found
         if (canvas != null)
         {
+            // Find GameObject Tunnelling1 under the Canvas
+            Transform tunnelling1Transform = canvas.transform.Find("Tunnelling1");
+            if (tunnelling1Transform == null)
+            {
+                Debug.LogError("Tunnelling1 GameObject not found under Canvas.");
+                return;
+            }
+            else
+            {
+                tunnelling1 = tunnelling1Transform.gameObject; // Corrected: Assign tunnelling1
+            }
+
+            // Find GameObject Tunnelling2 under the Canvas
+            Transform tunnelling2Transform = canvas.transform.Find("Tunnelling2");
+            if (tunnelling2Transform == null)
+            {
+                Debug.LogError("Tunnelling2 GameObject not found under Canvas.");
+                return;
+            }
+            else
+            {
+                tunnelling2 = tunnelling2Transform.gameObject; // Corrected: Assign tunnelling2
+            }
+
             // Navigate through the hierarchy
             Transform competencyCounter = canvas.transform.Find("Competency Counter");
             if (competencyCounter != null)
@@ -153,6 +179,24 @@ public class RadialProgress : MonoBehaviour
         else
         {
             Debug.LogError("radialProgress GameObject is null. Cannot deactivate it.");
+        }
+
+        // Deactivate tunnelling1 and activate tunnelling2
+        if (tunnelling1 != null)
+        {
+            tunnelling1.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Tunnelling1 GameObject is null. Cannot deactivate it.");
+        }
+        if (tunnelling2 != null)
+        {
+            tunnelling2.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Tunnelling2 GameObject is null. Cannot activate it.");
         }
 
         // Unpause the game
