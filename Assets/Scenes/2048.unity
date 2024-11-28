@@ -463,7 +463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &129677800
 RectTransform:
   m_ObjectHideFlags: 0
@@ -803,12 +803,12 @@ GameObject:
   - component: {fileID: 229394016}
   - component: {fileID: 229394015}
   m_Layer: 5
-  m_Name: Chat Line
+  m_Name: Icon Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &229394014
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4762,7 +4762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2056759067
 RectTransform:
   m_ObjectHideFlags: 0
