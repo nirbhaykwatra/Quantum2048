@@ -212,7 +212,7 @@ public class TileBoard : MonoBehaviour
 
     private void TunnelingMergeTiles(Tile a, Tile blocker, Tile b)
     {
-        if (tunnel_merge == 0 && tunnelingPopup != null)
+        if (tunnel_merge == 0 && tunnelingPopup != null && GlobalData.level == "tunnelling1")
         {
             // Activate the popup and play notification sound for the first time
             popUpSystem.Tunneling();
