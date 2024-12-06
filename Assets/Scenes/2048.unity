@@ -3086,6 +3086,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a300fade7d43e94abe37c35dc38c0d9, type: 2}
   - {fileID: 11400000, guid: 1be54a437c57bd940a0bc02aae22d9be, type: 2}
   tunnellingCompetencyCounter: {fileID: 1137877288}
+  tunnellingCompetencyCounter2: {fileID: 1137877288}
 --- !u!82 &997205598
 AudioSource:
   m_ObjectHideFlags: 0
