@@ -15,10 +15,12 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles;
     private bool waiting;
     private int tunnel_merge_1;
+    private int tunnel_merge_2;
     private GameObject tunnelingPopup;
     private GameObject infoButton;
     PopUpSystem popUpSystem;
     RadialProgress radialProgress;
+    RadialProgress radialProgress2;
     [SerializeField] GameObject tunnellingCompetencyCounter;
   
 
@@ -27,6 +29,7 @@ public class TileBoard : MonoBehaviour
         grid = GetComponentInChildren<TileGrid>();
         tiles = new List<Tile>(16);
         tunnel_merge_1 = 0;
+        tunnel_merge_2 = 0;
         popUpSystem = GameObject.Find("PopUpManager").GetComponent<PopUpSystem>();
     
         // Find the Canvas first
@@ -40,8 +43,19 @@ public class TileBoard : MonoBehaviour
             // Find Info Button under the Canvas
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
 
-            // Find the RadialProgress GameObject under the Canvas
+            // Find the RadialProgress and RadialProgress2 GameObjects under the Canvas
             radialProgress = tunnellingCompetencyCounter.GetComponent<RadialProgress>();
+            radialProgress2 = tunnellingCompetencyCounter.GetComponent<RadialProgress>();
+
+            // If RadialProgress and RadialProgress2 GameObjects are not found, log a warning
+            if (radialProgress == null)
+            {
+                Debug.LogWarning("RadialProgress GameObject not found under Canvas!");
+            }
+            if (radialProgress2 == null)
+            {
+                Debug.LogWarning("RadialProgress2 GameObject not found under Canvas!");
+            }
             
             if (tunnelingPopup != null && infoButton != null)
             {
@@ -84,14 +98,29 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
-        if (tunnel_merge_1 > 1)
+        if (GlobalData.level == "tunnelling1")
         {
-            radialProgress.currentValue = (tunnel_merge_1 - 1) * 20;
+            if (tunnel_merge_1 > 1)
+            {
+                radialProgress.currentValue = (tunnel_merge_1 - 1) * 20;
+            }
+            else
+            {
+                radialProgress.currentValue = 5;
+            }
         }
-        else
+        else if (GlobalData.level == "tunnelling2")
         {
-            radialProgress.currentValue = 5;
+            if (tunnel_merge_2 > 1)
+            {
+                radialProgress2.currentValue = (tunnel_merge_2 - 1) * 20;
+            }
+            else
+            {
+                radialProgress2.currentValue = 5;
+            }
         }
+
 
         if (!waiting)
         {
@@ -133,6 +162,8 @@ public class TileBoard : MonoBehaviour
         TileCell newCell = null;
         TileCell adjacent = grid.GetAdjacentCell(tile.cell, direction);
 
+        Debug.Log("Current level: " + GlobalData.level); // Debug log
+
         while (adjacent != null)
         {
             if (adjacent.Occupied)
@@ -145,12 +176,24 @@ public class TileBoard : MonoBehaviour
 
                 // Check for tunneling possibility
                 TileCell nextAdjacent = grid.GetAdjacentCell(adjacent, direction);
-                if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                if (GlobalData.level == "tunnelling1")
                 {
-                    TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
-                    return true;
+                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                    {
+                        Debug.Log("Tunneling1: Executing TunnelingMergeTiles");
+                        TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
+                        return true;
+                    }
                 }
-
+                else if (GlobalData.level == "tunnelling2")
+                {
+                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                    {
+                        Debug.Log("Tunneling2: Executing TunnelingMergeTilesHigher");
+                        TunnelingMergeTilesHigher(tile, adjacent.tile, nextAdjacent.tile);
+                        return true;
+                    }
+                }
                 break;
             }
 
@@ -166,6 +209,7 @@ public class TileBoard : MonoBehaviour
 
         return false;
     }
+
 
     private bool CanMerge(Tile a, Tile b)
     {
@@ -214,9 +258,44 @@ public class TileBoard : MonoBehaviour
         b.SetState(newState);
         GameManager.Instance.IncreaseScore(newState.number);
 
-        // Optionally, you can destroy or handle the blocker tile here if needed
         // Destroy(blocker.gameObject); // Example to destroy the blocker tile
     }
+
+    private void TunnelingMergeTilesHigher(Tile a, Tile blocker, Tile b)
+    {
+        if (tunnel_merge_2 == 0 && tunnelingPopup != null)
+        {
+            // Activate the popup and play notification sound for the first time
+            popUpSystem.Tunneling();
+
+            src.clip = notification_sound_1;
+            src.Play();
+
+            if (tunnelingEffect != null)
+            {
+                tunnelingEffect.Play();
+            }
+            else
+            {
+                Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
+            }
+        }
+
+        tunnel_merge_2 += 1; // Update tunnel_merge_2 instead of tunnel_merge_1
+
+        tiles.Remove(a);
+        a.Merge(b.cell, true);
+
+        int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
+        TileState newState = tileStates[index];
+
+        b.SetState(newState);
+        GameManager.Instance.IncreaseScore(newState.number);
+
+        // Optionally destroy the blocker
+        // Destroy(blocker.gameObject);
+    }
+
 
     private int IndexOf(TileState state)
     {

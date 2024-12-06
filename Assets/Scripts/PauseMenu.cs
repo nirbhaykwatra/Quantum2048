@@ -5,20 +5,55 @@ using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
-    public string level;  // Corrected: Specified the type as string
     private GameObject competencyCounter;
     private GameObject infoButton;
     public GameObject PausePanel;
     public TMP_Text titleText;
     public TMP_Text descriptionText;
+
     private int index = -1;
-    List<string> titleTexts;
-    List<string> descriptionTexts;
+    private List<string> titleTexts;
+    private List<string> descriptionTexts;
 
     void Awake()
     {
-        // Initialize the class-level lists instead of redeclaring them
-        if (level == "tunnelling1")  // Corrected: Replaced colon with braces
+        // Find the Canvas first
+        GameObject canvas = GameObject.Find("Canvas");
+
+        if (canvas != null)
+        {
+            competencyCounter = canvas.transform.Find("Competency Counter")?.gameObject;
+            infoButton = canvas.transform.Find("Info Button")?.gameObject;
+        }
+        else
+        {
+            Debug.LogError("Canvas GameObject not found.");
+        }
+
+        // Initialize texts based on the current GlobalData.level
+        InitializeTexts();
+    }
+
+    void Start()
+    {
+        // Initially, the game is paused, and the panel is active
+        PausePanel.SetActive(true);
+        Time.timeScale = 0;
+
+        // Start by showing the first text in the list
+        ShowNextText();
+    }
+
+    void Update()
+    {
+        // Additional update logic if needed
+    }
+
+    // Initializes the titleTexts and descriptionTexts based on GlobalData.level.
+    // Call this method whenever GlobalData.level changes.
+    public void InitializeTexts()
+    {
+        if (GlobalData.level == "tunnelling1")
         {
             titleTexts = new List<string>
             {
@@ -34,7 +69,7 @@ public class PauseMenu : MonoBehaviour
                 "Quantum tunneling is possible because particles in quantum mechanics behave as probabilistic waves, allowing them to have a finite chance of passing through energy barriers, even if they lack the classical energy to overcome them."
             };
         }
-        else
+        else if (GlobalData.level == "tunnelling2")
         {
             titleTexts = new List<string>
             {
@@ -50,39 +85,20 @@ public class PauseMenu : MonoBehaviour
                 "Have fun exploring the possibilities of quantum computing!"
             };
         }
-
-        // Find the Canvas first
-        GameObject canvas = GameObject.Find("Canvas");
-
-        if (canvas != null)
-        {
-            competencyCounter = canvas.transform.Find("Competency Counter")?.gameObject;
-            infoButton = canvas.transform.Find("Info Button")?.gameObject;
-        }
         else
         {
-            Debug.LogError("Canvas GameObject not found.");
+            Debug.LogError("Invalid level: " + GlobalData.level);
+            // You can set a default set of texts if needed
+            titleTexts = new List<string>() { "Invalid Level" };
+            descriptionTexts = new List<string>() { "No descriptions available." };
         }
-    }
 
-    void Start()
-    {
-        // Initially, the game is paused, and the panel is active
-        PausePanel.SetActive(true);
-        Time.timeScale = 0;
-
-        // Start by showing the first text in the list
-        ShowNextText();
-    }
-
-    void Update()
-    {
-        // You can add additional update logic here if needed
+        // Reset index so that showing texts starts from the beginning
+        index = -1;
     }
 
     public void Pause()
     {
-        // If the player wants to pause, we show the pause panel and stop time
         PausePanel.SetActive(true);
         Time.timeScale = 0;
     }
@@ -96,7 +112,7 @@ public class PauseMenu : MonoBehaviour
         }
         else
         {
-            // If all the texts have been shown, resume the game and open the Competency Counter and the info button
+            // All texts shown, resume game and enable UI elements
             if (competencyCounter != null)
             {
                 competencyCounter.SetActive(true);
@@ -124,8 +140,8 @@ public class PauseMenu : MonoBehaviour
     {
         // Increment the index and update the text fields
         index++;
-        // Print out the index to the console to help with debugging
-        Debug.Log("Index: " + index);
+        // Log the titleTexts
+        Debug.Log(titleTexts);
 
         // Ensure index is within bounds
         if (index >= 0 && index < titleTexts.Count)
@@ -156,7 +172,10 @@ public class PauseMenu : MonoBehaviour
 
     public void InfoContinue()
     {
-        // If index is greater than or equal to the count of the title texts, reset the index to -1
+        // Reinitialize texts to ensure the correct ones are used
+        InitializeTexts();
+        
+        // If we've reached the end, reset index and show from the start again
         if (index >= titleTexts.Count - 1)
         {
             index = -1;
