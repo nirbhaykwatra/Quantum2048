@@ -216,6 +216,12 @@ public class RadialProgress : MonoBehaviour
 
         GlobalData.level = "tunnelling2"; // Set the level to tunnelling2
 
+        TileBoard tileBoard = FindObjectOfType<TileBoard>();
+        if (tileBoard != null) 
+        {
+            tileBoard.ResetTunnelMerge();
+        }
+
         // Show Icon Line and Icon Dialog
         if (iconLine != null) iconLine.SetActive(true);
         if (iconDialog != null) iconDialog.SetActive(true);
