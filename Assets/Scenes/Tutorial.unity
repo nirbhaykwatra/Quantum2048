@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Occasionally, a box appears to teach a quantum concept...
+  m_text: Occasionally, a box will appear to teach you a (very cool!) quantum concept...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f913209af96e1f42b6bd635c9bfbd3d, type: 2}
   m_sharedMaterial: {fileID: -9109727166818787896, guid: 7f913209af96e1f42b6bd635c9bfbd3d, type: 2}
@@ -586,7 +586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 36c57c9610d6f164486e2b7bf1d0b1e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee0138c256ea1fc4da782b232a64dc1e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

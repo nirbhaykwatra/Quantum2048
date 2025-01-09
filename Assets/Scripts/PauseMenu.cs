@@ -74,14 +74,18 @@ public class PauseMenu : MonoBehaviour
             titleTexts = new List<string>
             {
                 "More about quantum tunneling...",
+                "More about quantum tunneling...",
+                "The catch!",
                 "The catch!",
                 "Time to play!"
             };
 
             descriptionTexts = new List<string>
             {
-                "As mentioned earlier, quantum tunneling is where instead of always having to climb over the tall fence, sometimes—just sometimes—particles can appear on the other side without going over the top! It’s as if they find a hidden tunnel under the fence.",
-                "But here’s the catch: the taller the fence (think of it as a larger number), the harder it is for the particle to use this trick. If the fence is super tall—like a giant number—then it’s much less likely that the particle can “tunnel” through. So, even though the particle has this special ability, the bigger the barrier (the higher the number), the less often it happens.",
+                "As mentioned earlier, quantum tunneling is where instead of always having to climb over the tall fence, sometimes—just sometimes—particles can appear on the other side without going over the top!",
+                "It’s as if they find a hidden tunnel under the fence!",
+                "But here’s the catch: the taller the fence (think of it as a larger number)... \n\n\n ...the harder it is for the particle to use this trick.",
+                "If the fence is very tall (a giant number) then it’s much less likely that the particle can “tunnel” through. \n\nSo, even though the particle has this special ability, the bigger the barrier (the higher the number), the less often it happens.",
                 "To help you understand this a little better, try tunnelling now! \n\n You'll notice that you can only tunnel through tiles above a certain number... what could that number be?"
             };
         }
