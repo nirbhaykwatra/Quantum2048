@@ -53,7 +53,7 @@ public class TileBoard : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Either Tunnelling1 or Info Button GameObjects were not found under Canvas!");
+                Debug.LogWarning("Either Tunnelling1, Info Button, or Background Music GameObjects were not found under Canvas!");
             }
             
         }
