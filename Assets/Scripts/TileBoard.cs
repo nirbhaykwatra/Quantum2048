@@ -14,19 +14,21 @@ public class TileBoard : MonoBehaviour
     private TileGrid grid;
     private List<Tile> tiles;
     private bool waiting;
-    private int tunnel_merge_1;
+    private int tunnel_merge;
     private GameObject tunnelingPopup;
     private GameObject infoButton;
     PopUpSystem popUpSystem;
     RadialProgress radialProgress;
+    RadialProgress radialProgress2;
     [SerializeField] GameObject tunnellingCompetencyCounter;
+    [SerializeField] GameObject tunnellingCompetencyCounter2;
   
 
     private void Awake()
     {
         grid = GetComponentInChildren<TileGrid>();
         tiles = new List<Tile>(16);
-        tunnel_merge_1 = 0;
+        tunnel_merge = 0;
         popUpSystem = GameObject.Find("PopUpManager").GetComponent<PopUpSystem>();
     
         // Find the Canvas first
@@ -40,8 +42,9 @@ public class TileBoard : MonoBehaviour
             // Find Info Button under the Canvas
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
 
-            // Find the RadialProgress GameObject under the Canvas
+            // Find the RadialProgress and RadialProgress2 GameObject under the Canvas
             radialProgress = tunnellingCompetencyCounter.GetComponent<RadialProgress>();
+            radialProgress2 = tunnellingCompetencyCounter2.GetComponent<RadialProgress>();
             
             if (tunnelingPopup != null && infoButton != null)
             {
@@ -50,7 +53,7 @@ public class TileBoard : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Either Tunnelling1 or Info Button GameObjects were not found under Canvas!");
+                Debug.LogWarning("Either Tunnelling1, Info Button, or Background Music GameObjects were not found under Canvas!");
             }
             
         }
@@ -59,6 +62,11 @@ public class TileBoard : MonoBehaviour
             Debug.LogWarning("Canvas GameObject not found in the scene!");
         }
     
+    }
+
+    public void ResetTunnelMerge() 
+    {
+        tunnel_merge = 0;
     }
 
     public void ClearBoard()
@@ -84,13 +92,25 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
-        if (tunnel_merge_1 > 1)
+        if (tunnel_merge > 1 && tunnel_merge < 7)
         {
-            radialProgress.currentValue = (tunnel_merge_1 - 1) * 20;
+            if (GlobalData.level == "tunnelling1")
+            {
+                radialProgress.currentValue = (tunnel_merge - 1) * 20;
+            }
+            else if (GlobalData.level == "tunnelling2")
+            {
+                radialProgress2.currentValue2 = (tunnel_merge - 1) * 20;
+            }
+        }
+        else if (tunnel_merge >= 7)
+        {
+            tunnel_merge = 0;
         }
         else
         {
             radialProgress.currentValue = 5;
+            radialProgress2.currentValue = 5;
         }
 
         if (!waiting)
@@ -145,12 +165,22 @@ public class TileBoard : MonoBehaviour
 
                 // Check for tunneling possibility
                 TileCell nextAdjacent = grid.GetAdjacentCell(adjacent, direction);
-                if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                if (GlobalData.level == "tunnelling1")
                 {
-                    TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
-                    return true;
+                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                    {
+                        TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
+                        return true;
+                    }
                 }
-
+                else if (GlobalData.level == "tunnelling2")
+                {
+                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile, 4))
+                    {
+                        TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
+                        return true;
+                    }
+                }
                 break;
             }
 
@@ -167,9 +197,10 @@ public class TileBoard : MonoBehaviour
         return false;
     }
 
-    private bool CanMerge(Tile a, Tile b)
+    private bool CanMerge(Tile a, Tile b, int threshold = 0)
     {
-        return a.state == b.state && !b.locked;
+        // Check if both tiles have the same state, are not locked, and their values are above the threshold
+        return a.state == b.state && !b.locked && a.state.number > threshold && b.state.number > threshold;
     }
 
     private void MergeTiles(Tile a, Tile b)
@@ -186,7 +217,7 @@ public class TileBoard : MonoBehaviour
 
     private void TunnelingMergeTiles(Tile a, Tile blocker, Tile b)
     {
-        if (tunnel_merge_1 == 0 && tunnelingPopup != null)
+        if (tunnel_merge == 0 && tunnelingPopup != null && GlobalData.level == "tunnelling1")
         {
             // Activate the popup and play notification sound for the first time
             popUpSystem.Tunneling();
@@ -203,7 +234,7 @@ public class TileBoard : MonoBehaviour
                 Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
             }
         }
-        tunnel_merge_1 = tunnel_merge_1 + 1;
+        tunnel_merge = tunnel_merge + 1;
     
         tiles.Remove(a);
         a.Merge(b.cell, true);

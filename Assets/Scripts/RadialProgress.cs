@@ -4,145 +4,208 @@ using UnityEngine.UI;
 
 public class RadialProgress : MonoBehaviour
 {
-    [SerializeField] private Image image; // Ensure this is set in the Inspector or dynamically
+    [SerializeField] private Image image1; // For RadialProgress (original)
+    [SerializeField] private Image image2; // For RadialProgress2 (new)
     public float currentValue;
+    public float currentValue2; // New variable for second progress bar
 
-    // Declare variables at the class level
     private GameObject iconLine;
+    private GameObject iconLine2;
     private GameObject iconDialog;
+    private GameObject iconDialog2;
     private GameObject radialProgress;
-    private GameObject tunnelling1;  // Corrected: Added tunnelling1
-    private GameObject tunnelling2;  // Corrected: Added tunnelling2
+    private GameObject radialProgress2;
+    private GameObject tunnelling1;
+    private GameObject tunnelling2;
 
-    private bool isProgressComplete = false; // Add this flag
+    private GameObject icon2;    // Reference to Icon2 GameObject
+    private GameObject iconHat;  // Reference to Icon Hat under Icon2
+
+    private bool isProgressComplete = false; 
+    private bool isProgressComplete2 = false; // New flag for second progress completion
 
     void Start()
     {
         // Find the Canvas first
         GameObject canvas = GameObject.Find("Canvas");
 
-        // Check if Canvas is found
-        if (canvas != null)
+        if (canvas == null)
         {
-            // Find GameObject Tunnelling1 under the Canvas
-            Transform tunnelling1Transform = canvas.transform.Find("Tunnelling1");
-            if (tunnelling1Transform == null)
-            {
-                Debug.LogError("Tunnelling1 GameObject not found under Canvas.");
-                return;
-            }
-            else
-            {
-                tunnelling1 = tunnelling1Transform.gameObject; // Corrected: Assign tunnelling1
-            }
+            Debug.LogError("Canvas GameObject not found.");
+            return;
+        }
 
-            // Find GameObject Tunnelling2 under the Canvas
-            Transform tunnelling2Transform = canvas.transform.Find("Tunnelling2");
-            if (tunnelling2Transform == null)
-            {
-                Debug.LogError("Tunnelling2 GameObject not found under Canvas.");
-                return;
-            }
-            else
-            {
-                tunnelling2 = tunnelling2Transform.gameObject; // Corrected: Assign tunnelling2
-            }
+        Transform tunnelling1Transform = canvas.transform.Find("Tunnelling1");
+        if (tunnelling1Transform == null)
+        {
+            Debug.LogError("Tunnelling1 GameObject not found under Canvas.");
+            return;
+        }
+        tunnelling1 = tunnelling1Transform.gameObject;
 
-            // Navigate through the hierarchy
-            Transform competencyCounter = canvas.transform.Find("Competency Counter");
-            if (competencyCounter != null)
-            {
-                Transform tunnellingProgress = competencyCounter.Find("TunnellingProgress");
-                if (tunnellingProgress != null)
-                {
-                    Transform icon = tunnellingProgress.Find("Icon");
-                    if (icon != null)
-                    {
-                        Transform iconLineTransform = icon.Find("Icon Line");
-                        if (iconLineTransform != null)
-                        {
-                            iconLine = iconLineTransform.gameObject;
-                            // Ensure the Icon Line starts inactive
-                            iconLine.SetActive(false);
-                        }
-                        else
-                        {
-                            Debug.LogError("Icon Line GameObject not found under Icon.");
-                        }
+        Transform tunnelling2Transform = canvas.transform.Find("Tunnelling2");
+        if (tunnelling2Transform == null)
+        {
+            Debug.LogError("Tunnelling2 GameObject not found under Canvas.");
+            return;
+        }
+        tunnelling2 = tunnelling2Transform.gameObject;
 
-                        Transform iconDialogTransform = icon.Find("Icon Dialog");
-                        if (iconDialogTransform != null)
-                        {
-                            iconDialog = iconDialogTransform.gameObject;
-                            // Ensure the Icon Dialog starts inactive
-                            iconDialog.SetActive(false);
-                        }
-                        else
-                        {
-                            Debug.LogError("Icon Dialog GameObject not found under Icon.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("Icon GameObject not found under TunnellingProgress.");
-                    }
+        Transform competencyCounter = canvas.transform.Find("Competency Counter");
+        if (competencyCounter == null)
+        {
+            Debug.LogError("Competency Counter GameObject not found under Canvas.");
+            return;
+        }
 
-                    // Find RadialProgress under TunnellingProgress
-                    Transform radialProgressTransform = tunnellingProgress.Find("RadialProgress");
-                    if (radialProgressTransform != null)
-                    {
-                        radialProgress = radialProgressTransform.gameObject;
-                        image = radialProgress.GetComponent<Image>();
+        Transform tunnellingProgress = competencyCounter.Find("TunnellingProgress");
+        if (tunnellingProgress == null)
+        {
+            Debug.LogError("TunnellingProgress GameObject not found under Competency Counter.");
+            return;
+        }
 
-                        if (image == null)
-                        {
-                            Debug.LogError("Image component not found on RadialProgress GameObject.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("RadialProgress GameObject not found under TunnellingProgress.");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("TunnellingProgress GameObject not found under Competency Counter.");
-                }
-            }
-            else
-            {
-                Debug.LogError("Competency Counter GameObject not found under Canvas.");
-            }
+        Transform icon = tunnellingProgress.Find("Icon");
+        if (icon == null)
+        {
+            Debug.LogError("Icon GameObject not found under TunnellingProgress.");
+            return;
+        }
+
+        Transform iconLineTransform = icon.Find("Icon Line");
+        if (iconLineTransform != null)
+        {
+            iconLine = iconLineTransform.gameObject;
+            iconLine.SetActive(false);
         }
         else
         {
-            Debug.LogError("Canvas GameObject not found.");
+            Debug.LogError("Icon Line GameObject not found under Icon.");
+        }
+
+        Transform iconDialogTransform = icon.Find("Icon Dialog");
+        if (iconDialogTransform != null)
+        {
+            iconDialog = iconDialogTransform.gameObject;
+            iconDialog.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Icon Dialog GameObject not found under Icon.");
+        }
+
+        Transform icon2Transform = tunnellingProgress.Find("Icon2");
+        if (icon2Transform == null)
+        {
+            Debug.LogError("Icon2 GameObject not found under TunnellingProgress.");
+            return;
+        }
+
+        // Store icon2 reference
+        icon2 = icon2Transform.gameObject;
+        icon2.SetActive(false);
+
+        Transform iconHatTransform = icon2Transform.Find("Icon Hat");
+        if (iconHatTransform != null)
+        {
+            iconHat = iconHatTransform.gameObject;
+            iconHat.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Icon Hat GameObject not found under Icon2.");
+        }
+
+        Transform iconLineTransform2 = icon2Transform.Find("Icon Line 2");
+        if (iconLineTransform2 != null)
+        {
+            iconLine2 = iconLineTransform2.gameObject;
+            iconLine2.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Icon Line 2 GameObject not found under Icon2.");
+        }
+
+        Transform iconDialogTransform2 = icon2Transform.Find("Icon Dialog 2");
+        if (iconDialogTransform2 != null)
+        {
+            iconDialog2 = iconDialogTransform2.gameObject;
+            iconDialog2.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Icon Dialog 2 GameObject not found under Icon2.");
+        }
+
+        Transform radialProgressTransform = tunnellingProgress.Find("RadialProgress");
+        if (radialProgressTransform != null)
+        {
+            radialProgress = radialProgressTransform.gameObject;
+            Image tempImage = radialProgress.GetComponent<Image>();
+            if (tempImage == null)
+            {
+                Debug.LogError("Image component not found on RadialProgress GameObject.");
+                return;
+            }
+            image1 = tempImage;
+        }
+        else
+        {
+            Debug.LogError("RadialProgress GameObject not found under TunnellingProgress.");
+        }
+
+        Transform radialProgressTransform2 = tunnellingProgress.Find("RadialProgress2");
+        if (radialProgressTransform2 != null)
+        {
+            radialProgress2 = radialProgressTransform2.gameObject;
+            Image tempImage2 = radialProgress2.GetComponent<Image>();
+            if (tempImage2 == null)
+            {
+                Debug.LogError("Image component not found on RadialProgress2 GameObject.");
+                return;
+            }
+            image2 = tempImage2;
+            radialProgress2.SetActive(false); // Initially off until after stage 1 is done
+        }
+        else
+        {
+            Debug.LogError("RadialProgress2 GameObject not found under TunnellingProgress.");
         }
     }
 
     void Update()
     {
-        if (image == null)
+        // Update first radial bar if not complete
+        if (!isProgressComplete && image1 != null && radialProgress.activeSelf)
         {
-            Debug.LogError("Image component is null. Please assign it in the Inspector or ensure it's set correctly.");
-            return;
+            image1.fillAmount = currentValue / 100f;
+
+            if (image1.fillAmount >= 1 && !isProgressComplete)
+            {
+                isProgressComplete = true;
+                // Pause the game
+                Time.timeScale = 0;
+                // Re-colour the bar
+                image1.color = new Color(208 / 255f, 71 / 255f, 195 / 255f);
+                StartCoroutine(ProgressCompleteRoutine());
+            }
         }
 
-        image.fillAmount = currentValue / 100;
-
-        if (image.fillAmount >= 1 && !isProgressComplete)
+        // Update second radial bar if active and not complete
+        if (!isProgressComplete2 && image2 != null && radialProgress2.activeSelf)
         {
-            isProgressComplete = true;
+            image2.fillAmount = currentValue2 / 100f;
 
-            // Pause the game
-            Time.timeScale = 0;
-
-            // Convert R=208, G=71, B=195 to a Color object
-            Color customColor = new Color(208 / 255f, 71 / 255f, 195 / 255f);
-            image.color = customColor;
-
-            // Start the coroutine to handle the delayed actions
-            StartCoroutine(ProgressCompleteRoutine());
+            if (image2.fillAmount >= 1 && !isProgressComplete2)
+            {
+                isProgressComplete2 = true;
+                // Pause the game
+                Time.timeScale = 0;
+                // Re-colour the bar
+                image2.color = new Color(208 / 255f, 71 / 255f, 195 / 255f);
+                StartCoroutine(ProgressCompleteRoutine2());
+            }
         }
     }
 
@@ -151,53 +214,44 @@ public class RadialProgress : MonoBehaviour
         // Wait for 1 second in real time
         yield return new WaitForSecondsRealtime(1);
 
-        // Open the Icon Line if it's not null
-        if (iconLine != null)
+        GlobalData.level = "tunnelling2"; // Set the level to tunnelling2
+
+        TileBoard tileBoard = FindObjectOfType<TileBoard>();
+        if (tileBoard != null) 
         {
-            iconLine.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("iconLine GameObject is null. Cannot activate it.");
+            tileBoard.ResetTunnelMerge();
         }
 
-        // Open the Icon Dialog if it's not null
-        if (iconDialog != null)
-        {
-            iconDialog.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("iconDialog GameObject is null. Cannot activate it.");
-        }
+        // Show Icon Line and Icon Dialog
+        if (iconLine != null) iconLine.SetActive(true);
+        if (iconDialog != null) iconDialog.SetActive(true);
 
-        // Close radialProgress if it's not null
-        if (radialProgress != null)
-        {
-            radialProgress.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("radialProgress GameObject is null. Cannot deactivate it.");
-        }
+        // Hide the first radialProgress
+        if (radialProgress != null) radialProgress.SetActive(false);
 
         // Deactivate tunnelling1 and activate tunnelling2
-        if (tunnelling1 != null)
-        {
-            tunnelling1.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("Tunnelling1 GameObject is null. Cannot deactivate it.");
-        }
-        if (tunnelling2 != null)
-        {
-            tunnelling2.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("Tunnelling2 GameObject is null. Cannot activate it.");
-        }
+        if (tunnelling1 != null) tunnelling1.SetActive(false);
+        if (tunnelling2 != null) tunnelling2.SetActive(true);
+
+        // Activate second stage UI elements
+        if (icon2 != null) icon2.SetActive(true);
+        if (iconHat != null) iconHat.SetActive(true);
+        if (radialProgress2 != null) radialProgress2.SetActive(true);
+        // Unpause the game so we can progress to the second stage naturally
+        Time.timeScale = 1;
+    }
+
+    private IEnumerator ProgressCompleteRoutine2()
+    {
+        // Wait for 1 second in real time
+        yield return new WaitForSecondsRealtime(1);
+
+        // Show second line and dialog
+        if (iconLine2 != null) iconLine2.SetActive(true);
+        if (iconDialog2 != null) iconDialog2.SetActive(true);
+
+        // Hide the second radialProgress
+        if (radialProgress2 != null) radialProgress2.SetActive(false);
 
         // Unpause the game
         Time.timeScale = 1;

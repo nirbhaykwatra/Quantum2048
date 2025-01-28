@@ -5,20 +5,55 @@ using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
-    public string level;  // Corrected: Specified the type as string
     private GameObject competencyCounter;
     private GameObject infoButton;
     public GameObject PausePanel;
     public TMP_Text titleText;
     public TMP_Text descriptionText;
+
     private int index = -1;
-    List<string> titleTexts;
-    List<string> descriptionTexts;
+    private List<string> titleTexts;
+    private List<string> descriptionTexts;
 
     void Awake()
     {
-        // Initialize the class-level lists instead of redeclaring them
-        if (level == "tunnelling1")  // Corrected: Replaced colon with braces
+        // Find the Canvas first
+        GameObject canvas = GameObject.Find("Canvas");
+
+        if (canvas != null)
+        {
+            competencyCounter = canvas.transform.Find("Competency Counter")?.gameObject;
+            infoButton = canvas.transform.Find("Info Button")?.gameObject;
+        }
+        else
+        {
+            Debug.LogError("Canvas GameObject not found.");
+        }
+
+        // Initialize texts based on the current GlobalData.level
+        InitializeTexts();
+    }
+
+    void Start()
+    {
+        // Initially, the game is paused, and the panel is active
+        PausePanel.SetActive(true);
+        Time.timeScale = 0;
+
+        // Start by showing the first text in the list
+        ShowNextText();
+    }
+
+    void Update()
+    {
+        // Additional update logic if needed
+    }
+
+    // Initializes the titleTexts and descriptionTexts based on GlobalData.level.
+    // Call this method whenever GlobalData.level changes.
+    public void InitializeTexts()
+    {
+        if (GlobalData.level == "tunnelling1")
         {
             titleTexts = new List<string>
             {
@@ -34,55 +69,40 @@ public class PauseMenu : MonoBehaviour
                 "Quantum tunneling is possible because particles in quantum mechanics behave as probabilistic waves, allowing them to have a finite chance of passing through energy barriers, even if they lack the classical energy to overcome them."
             };
         }
-        else
+        else if (GlobalData.level == "tunnelling2")
         {
             titleTexts = new List<string>
             {
-                "Hello world!",
-                "Hello qworld!",
-                "Hello quantum world!"
+                "More about quantum tunneling...",
+                "More about quantum tunneling...",
+                "The catch!",
+                "The catch!",
+                "Time to play!"
             };
 
             descriptionTexts = new List<string>
             {
-                "Welcome to the quantum world!",
-                "This is a simple demonstration of quantum concepts.",
-                "Have fun exploring the possibilities of quantum computing!"
+                "As mentioned earlier, quantum tunneling is where instead of always having to climb over the tall fence, sometimes—just sometimes—particles can appear on the other side without going over the top!",
+                "It’s as if they find a hidden tunnel under the fence!",
+                "But here’s the catch: the taller the fence (think of it as a larger number)... \n\n\n ...the harder it is for the particle to use this trick.",
+                "If the fence is very tall (a giant number) then it’s much less likely that the particle can “tunnel” through. \n\nSo, even though the particle has this special ability, the bigger the barrier (the higher the number), the less often it happens.",
+                "To help you understand this a little better, try tunnelling now! \n\n You'll notice that you can only tunnel through tiles above a certain number... what could that number be?"
             };
-        }
-
-        // Find the Canvas first
-        GameObject canvas = GameObject.Find("Canvas");
-
-        if (canvas != null)
-        {
-            competencyCounter = canvas.transform.Find("Competency Counter")?.gameObject;
-            infoButton = canvas.transform.Find("Info Button")?.gameObject;
         }
         else
         {
-            Debug.LogError("Canvas GameObject not found.");
+            Debug.LogError("Invalid level: " + GlobalData.level);
+            // You can set a default set of texts if needed
+            titleTexts = new List<string>() { "Invalid Level" };
+            descriptionTexts = new List<string>() { "No descriptions available." };
         }
-    }
 
-    void Start()
-    {
-        // Initially, the game is paused, and the panel is active
-        PausePanel.SetActive(true);
-        Time.timeScale = 0;
-
-        // Start by showing the first text in the list
-        ShowNextText();
-    }
-
-    void Update()
-    {
-        // You can add additional update logic here if needed
+        // Reset index so that showing texts starts from the beginning
+        index = -1;
     }
 
     public void Pause()
     {
-        // If the player wants to pause, we show the pause panel and stop time
         PausePanel.SetActive(true);
         Time.timeScale = 0;
     }
@@ -96,7 +116,7 @@ public class PauseMenu : MonoBehaviour
         }
         else
         {
-            // If all the texts have been shown, resume the game and open the Competency Counter and the info button
+            // All texts shown, resume game and enable UI elements
             if (competencyCounter != null)
             {
                 competencyCounter.SetActive(true);
@@ -124,8 +144,8 @@ public class PauseMenu : MonoBehaviour
     {
         // Increment the index and update the text fields
         index++;
-        // Print out the index to the console to help with debugging
-        Debug.Log("Index: " + index);
+        // Log the titleTexts
+        Debug.Log(titleTexts);
 
         // Ensure index is within bounds
         if (index >= 0 && index < titleTexts.Count)
@@ -156,7 +176,10 @@ public class PauseMenu : MonoBehaviour
 
     public void InfoContinue()
     {
-        // If index is greater than or equal to the count of the title texts, reset the index to -1
+        // Reinitialize texts to ensure the correct ones are used
+        InitializeTexts();
+        
+        // If we've reached the end, reset index and show from the start again
         if (index >= titleTexts.Count - 1)
         {
             index = -1;
