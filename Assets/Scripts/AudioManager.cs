@@ -27,8 +27,15 @@ public class AudioManager : MonoBehaviour
     public void ToggleMusic()
     {
         if (audioSource.isPlaying)
-            audioSource.Stop();
+        {
+            audioSource.Pause();  // Pauses at the current playback position
+        }
         else
-            audioSource.Play();
+        {
+            // If the AudioSource is paused, UnPause() will resume from the last position
+            // If the AudioSource has never played, UnPause() acts like Play()
+            audioSource.UnPause(); 
+        }
     }
+
 }
