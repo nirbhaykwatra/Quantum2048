@@ -8,7 +8,8 @@ public class RadialProgress : MonoBehaviour
     [SerializeField] private Image image2; // For RadialProgress2 (new)
     public float currentValue;
     public float currentValue2; // New variable for second progress bar
-
+    public AudioSource src;
+    public AudioClip notification_sound_1;
     private GameObject iconLine;
     private GameObject iconLine2;
     private GameObject iconDialog;
@@ -215,6 +216,9 @@ public class RadialProgress : MonoBehaviour
         yield return new WaitForSecondsRealtime(1);
 
         GlobalData.level = "tunnelling2"; // Set the level to tunnelling2
+
+        src.clip = notification_sound_1;
+        src.Play();
 
         // Show Icon Line and Icon Dialog
         if (iconLine != null) iconLine.SetActive(true);

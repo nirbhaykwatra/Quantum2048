@@ -4017,6 +4017,8 @@ MonoBehaviour:
   image2: {fileID: 2016823020}
   currentValue: 5
   currentValue2: 5
+  src: {fileID: 997205598}
+  notification_sound_1: {fileID: 8300000, guid: cd86adecd40e04a4cb41f07f211d15a3, type: 3}
 --- !u!1 &1186592816
 GameObject:
   m_ObjectHideFlags: 0
