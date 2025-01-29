@@ -95,13 +95,9 @@ public class TileBoard : MonoBehaviour
         {
             radialProgress.currentValue = (tunnel_merge - 1) * 20;
         }
-        else if (tunnel_merge == 7)
+        else if (tunnel_merge >=7 && tunnel_merge <=12)
         {
-            radialProgress2.currentValue2 = 5;
-        }
-        else if (tunnel_merge >=8 && tunnel_merge <=12)
-        {
-            radialProgress2.currentValue2 = (tunnel_merge - 7) * 20;
+            radialProgress2.currentValue2 = (tunnel_merge - 6) * 20;
         }
 
         if (!waiting)
@@ -208,7 +204,8 @@ public class TileBoard : MonoBehaviour
 
     private void TunnelingMergeTiles(Tile a, Tile blocker, Tile b)
     {
-        if (tunnel_merge == 0 && tunnelingPopup != null && GlobalData.level == "tunnelling1")
+        tunnel_merge = tunnel_merge + 1;
+        if (tunnel_merge == 1 && tunnelingPopup != null && GlobalData.level == "tunnelling1")
         {
             // Activate the popup and play notification sound for the first time
             popUpSystem.Tunneling();
@@ -225,7 +222,6 @@ public class TileBoard : MonoBehaviour
                 Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
             }
         }
-        tunnel_merge = tunnel_merge + 1;
     
         tiles.Remove(a);
         a.Merge(b.cell, true);
