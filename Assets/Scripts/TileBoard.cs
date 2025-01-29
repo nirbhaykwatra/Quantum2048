@@ -92,11 +92,22 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
-        if (tunnel_merge > 1 && tunnel_merge < 7)
+        if (tunnel_merge >= 1 && tunnel_merge < 7)
         {
             if (GlobalData.level == "tunnelling1")
             {
-                radialProgress.currentValue = (tunnel_merge - 1) * 20;
+                if (tunnel_merge == 1)
+                {
+                    // Print the tunnel_merge value to the console
+                    Debug.Log("Tunnel Merge == 1: " + tunnel_merge);
+                    radialProgress.currentValue = (tunnel_merge) * 10;
+                }
+                else
+                {
+                    // Print the tunnel_merge value to the console
+                    Debug.Log("Tunnel Merge > 1: " + tunnel_merge);
+                    radialProgress.currentValue = (tunnel_merge - 1) * 20;
+                }
             }
             else if (GlobalData.level == "tunnelling2")
             {
