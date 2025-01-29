@@ -64,11 +64,6 @@ public class TileBoard : MonoBehaviour
     
     }
 
-    public void ResetTunnelMerge() 
-    {
-        tunnel_merge = 0;
-    }
-
     public void ClearBoard()
     {
         foreach (var cell in grid.cells) {
@@ -92,36 +87,21 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
-        if (tunnel_merge >= 1 && tunnel_merge < 7)
-        {
-            if (GlobalData.level == "tunnelling1")
-            {
-                if (tunnel_merge == 1)
-                {
-                    // Print the tunnel_merge value to the console
-                    Debug.Log("Tunnel Merge == 1: " + tunnel_merge);
-                    radialProgress.currentValue = (tunnel_merge) * 10;
-                }
-                else
-                {
-                    // Print the tunnel_merge value to the console
-                    Debug.Log("Tunnel Merge > 1: " + tunnel_merge);
-                    radialProgress.currentValue = (tunnel_merge - 1) * 20;
-                }
-            }
-            else if (GlobalData.level == "tunnelling2")
-            {
-                radialProgress2.currentValue2 = (tunnel_merge - 1) * 20;
-            }
-        }
-        else if (tunnel_merge >= 7)
-        {
-            tunnel_merge = 0;
-        }
-        else
+        if (tunnel_merge == 1)
         {
             radialProgress.currentValue = 5;
-            radialProgress2.currentValue = 5;
+        }
+        else if (tunnel_merge >=2 && tunnel_merge <=6)
+        {
+            radialProgress.currentValue = (tunnel_merge - 1) * 20;
+        }
+        else if (tunnel_merge == 7)
+        {
+            radialProgress2.currentValue2 = 5;
+        }
+        else if (tunnel_merge >=8 && tunnel_merge <=12)
+        {
+            radialProgress2.currentValue2 = (tunnel_merge - 7) * 20;
         }
 
         if (!waiting)
