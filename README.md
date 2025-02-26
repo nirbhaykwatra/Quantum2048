@@ -306,7 +306,7 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Extending Functionality:**  
   - To add new tile behaviors, modify or extend methods in **Tile.cs**.
   - For additional game rules or UI changes, adjust **GameManager.cs** and **TileBoard.cs**.
-  - Consider enhancing UI feedback (animations, sounds) by updating **AudioManager.cs**, **RadialProgress.cs**, or adding new UI components.
+  - Consider improving UI feedback (animations, sounds) by updating **AudioManager.cs**, **RadialProgress.cs**, or adding new UI components.
 - **Refactoring:**  
   - Utilize modularity in scripts like **PopUpSystem.cs** and **PauseMenu.cs** to introduce new tutorial or popup sequences.
   - When adding new levels or features, create additional `TileState` assets to manage visual themes.
