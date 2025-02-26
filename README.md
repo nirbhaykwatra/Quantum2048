@@ -2,6 +2,7 @@
 # Quantum 2048 Code Walkthrough
 
 > 2048 is a puzzle game originally written by Italian web developer Gabriele Cirulli and published on GitHub. The objective of the game is to slide numbered tiles on a grid to combine them until reaching the number 2048. It was originally written in JavaScript and CSS over a weekend, and released on March 9th, 2014 as free and open-source software.
+> 
 > Inspired by the original 2048 game, we've created a Quantum 2048 game that teaches the player some important concepts in quantum computing with the help of quantum-inspired 2048 gameplay.
 
 This guide provides an in-depth overview of the core scripts used in Quantum 2048. It is designed to help developers understand the game’s architecture and serves as a reference for making changes or adding new features.
