@@ -3,25 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/*
+ * PauseMenu Class
+ * ---------------
+ * Manages the pause menu functionality, including displaying context-sensitive tutorial text
+ * based on the current game level, pausing/resuming gameplay, and handling related UI elements.
+ */
 public class PauseMenu : MonoBehaviour
 {
+    // Reference to the "Competency Counter" UI element, used to display game competency data.
     private GameObject competencyCounter;
+
+    // Reference to the "Info Button" UI element, which may provide additional game information.
     private GameObject infoButton;
+
+    // The GameObject representing the pause menu panel.
     public GameObject PausePanel;
+
+    // Text component for displaying the title text in the pause menu.
     public TMP_Text titleText;
+
+    // Text component for displaying the description text in the pause menu.
     public TMP_Text descriptionText;
 
+    // Index for the current position in the text lists.
     private int index = -1;
+
+    // List of title strings to be displayed based on the current game level.
     private List<string> titleTexts;
+
+    // List of description strings corresponding to the title texts.
     private List<string> descriptionTexts;
 
+    // Called when the script instance is being loaded.
+    // Locates essential UI elements and initializes the tutorial texts according to the current level.
     void Awake()
     {
-        // Find the Canvas first
+        // Locate the Canvas GameObject in the scene.
         GameObject canvas = GameObject.Find("Canvas");
 
         if (canvas != null)
         {
+            // Find the "Competency Counter" and "Info Button" as children of the Canvas.
             competencyCounter = canvas.transform.Find("Competency Counter")?.gameObject;
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
         }
@@ -30,27 +53,32 @@ public class PauseMenu : MonoBehaviour
             Debug.LogError("Canvas GameObject not found.");
         }
 
-        // Initialize texts based on the current GlobalData.level
+        // Initialize the tutorial texts based on the current GlobalData.level.
         InitializeTexts();
     }
 
+    // Called before the first frame update.
+    // Activates the pause panel, pauses the game, and displays the first text entry.
     void Start()
     {
-        // Initially, the game is paused, and the panel is active
+        // Activate the pause menu panel.
         PausePanel.SetActive(true);
+        // Pause the game by setting the timescale to 0.
         Time.timeScale = 0;
 
-        // Start by showing the first text in the list
+        // Display the first set of tutorial text.
         ShowNextText();
     }
 
+    // Update is called once per frame.
+    // Reserved for future per-frame logic if needed.
     void Update()
     {
-        // Additional update logic if needed
+        // Additional update logic can be added here if required.
     }
 
-    // Initializes the titleTexts and descriptionTexts based on GlobalData.level.
-    // Call this method whenever GlobalData.level changes.
+    // Initializes the titleTexts and descriptionTexts lists based on the current game level.
+    // This method should be called whenever GlobalData.level changes.
     public void InitializeTexts()
     {
         if (GlobalData.level == "tunnelling1")
@@ -92,31 +120,34 @@ public class PauseMenu : MonoBehaviour
         else
         {
             Debug.LogError("Invalid level: " + GlobalData.level);
-            // You can set a default set of texts if needed
+            // Set default texts if the level is invalid.
             titleTexts = new List<string>() { "Invalid Level" };
             descriptionTexts = new List<string>() { "No descriptions available." };
         }
 
-        // Reset index so that showing texts starts from the beginning
+        // Reset the index to start showing texts from the beginning.
         index = -1;
     }
 
+    // Activates the pause menu and pauses the game.
     public void Pause()
     {
         PausePanel.SetActive(true);
         Time.timeScale = 0;
     }
 
+    // Continues the game by either displaying the next text in the sequence or resuming gameplay if all texts have been shown.
+    // Also reactivates UI elements once the pause menu is dismissed.
     public void Continue()
     {
-        // If we still have text to show, show the next one
+        // Check if there are more texts to display.
         if (index < titleTexts.Count - 1)
         {
             ShowNextText();
         }
         else
         {
-            // All texts shown, resume game and enable UI elements
+            // All texts have been displayed; resume the game.
             if (competencyCounter != null)
             {
                 competencyCounter.SetActive(true);
@@ -135,19 +166,22 @@ public class PauseMenu : MonoBehaviour
                 Debug.LogError("infoButton is null. Cannot set active.");
             }
 
+            // Deactivate the pause panel and resume the game by restoring the timescale.
             PausePanel.SetActive(false);
             Time.timeScale = 1;
         }
     }
 
+    // Displays the next set of title and description texts in the pause menu.
+    // Increments the internal index and updates the UI text elements accordingly.
     private void ShowNextText()
     {
-        // Increment the index and update the text fields
+        // Increment the text index.
         index++;
-        // Log the titleTexts
+        // Log the current list of title texts for debugging purposes.
         Debug.Log(titleTexts);
 
-        // Ensure index is within bounds
+        // Ensure the index is within valid bounds.
         if (index >= 0 && index < titleTexts.Count)
         {
             if (titleText != null)
@@ -174,12 +208,14 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    // Advances the pause menu text sequence.
+    // Reinitializes texts if necessary and resets the index when the end of the sequence is reached.
     public void InfoContinue()
     {
-        // Reinitialize texts to ensure the correct ones are used
+        // Reinitialize the texts to ensure they are up to date with the current game level.
         InitializeTexts();
         
-        // If we've reached the end, reset index and show from the start again
+        // If the end of the text list is reached, reset the index to start over.
         if (index >= titleTexts.Count - 1)
         {
             index = -1;
