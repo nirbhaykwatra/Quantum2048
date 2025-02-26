@@ -2,65 +2,70 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-// This script sperates the popup behavior into a seperate script from TileBoard so all popup behavior can be independent
-// and easily accessed. 
-
+/*
+ * PopUpSystem Class
+ * -----------------
+ * Separates the popup behavior into a dedicated script, independent from TileBoard.
+ * This allows for easier management and access to all popup functionalities.
+ */
 public class PopUpSystem : MonoBehaviour
 {
-    // initializing popup gameobjects
+    // Reference to the tunneling popup GameObject.
     private GameObject tunnelingPopup;
-    private GameObject infoButton; 
-    
 
+    // Reference to the Info Button GameObject.
+    private GameObject infoButton; 
+
+    // Called when the script instance is being loaded.
+    // Locates the Canvas and its child elements required for popup functionalities.
     private void Awake()
     {
-        
-        // Find the Canvas first
+        // Find the Canvas GameObject in the scene.
         GameObject canvas = GameObject.Find("Canvas");
 
         if (canvas != null)
         {
-            // Find Tunnelling1 under the Canvas
+            // Locate the "Tunnelling1" popup under the Canvas.
             tunnelingPopup = canvas.transform.Find("Tunnelling1")?.gameObject;
 
-            // Find Info Button under the Canvas
+            // Locate the "Info Button" under the Canvas.
             infoButton = canvas.transform.Find("Info Button")?.gameObject;
-            
         }
         else
         {
             Debug.LogWarning("Canvas GameObject not found in the scene!");
         }
-        
     }
 
-
-       public void Tunneling()
+    // Activates the tunneling popup and initiates the pause behavior.
+    public void Tunneling()
     {
-
-        // activate the info popup and pause. 
+        // Activate the tunneling popup.
         tunnelingPopup.SetActive(true);
         
+        // Invoke the pause functionality.
         Pause();
     }
 
-       public void Pause()
+    // Handles the pause behavior related to popup interactions.
+    // Currently, this method manages the visibility of the Info Button.
+    public void Pause()
     {
-        // initially this function used timescale to pause the game. Have now switched it to just dealing with teh info button for now.
+        // If the tunneling popup is active, adjust UI accordingly.
         if (tunnelingPopup.activeSelf == true)
         {
             Debug.Log("popup");
 
-          // commenting out timescale pausing for now 
-          //  Time.timeScale = 0;
+            // Uncomment the following line if using timescale pausing:
+            // Time.timeScale = 0;
             infoButton.SetActive(false);
         }
         else
         {
             Debug.Log("no popup");
            
-           // Time.timeScale = 1;
+            // Uncomment the following line if using timescale pausing:
+            // Time.timeScale = 1;
             infoButton.SetActive(true);
         }
     }

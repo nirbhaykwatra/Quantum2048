@@ -1,121 +1,130 @@
 // Import necessary namespaces for Unity and TextMeshPro functionality
-using System.Collections; // Enables using IEnumerator for coroutines
-using TMPro;             // For text rendering with TextMeshPro
-using UnityEngine;        // Main Unity namespace
-using UnityEngine.UI;     // For UI components like Image
+using System.Collections;   // Enables use of IEnumerator for coroutines
+using TMPro;                // For text rendering with TextMeshPro
+using UnityEngine;          // Main Unity namespace
+using UnityEngine.UI;       // For UI components like Image
 
-// The Tile class represents a single tile in the game grid.
-// This script should be attached to individual Tile objects in Unity.
+/*
+ * Tile Class
+ * ----------
+ * Represents a single tile in the game grid.
+ * Attach this script to individual Tile objects in Unity.
+ */
 public class Tile : MonoBehaviour
 {
-    // Encapsulated properties to access the state and cell associated with this tile
-    public TileState state { get; private set; } // Stores the current state of the tile, such as color and number
-    public TileCell cell { get; private set; }   // Keeps track of the cell location where the tile is placed
-    public bool locked { get; set; }             // Indicates whether the tile is locked and cannot be moved
+    // Encapsulated properties to access the state and cell associated with this tile.
+    // Stores the current state of the tile, such as color and number.
+    public TileState state { get; private set; }
+    // Keeps track of the cell location where the tile is placed.
+    public TileCell cell { get; private set; }
+    // Indicates whether the tile is locked and cannot be moved.
+    public bool locked { get; set; }
 
-    // Private fields for UI elements of the tile
-    private Image background;            // The background image of the tile
-    private TextMeshProUGUI text;        // Text component for displaying numbers
+    // Private fields for UI elements of the tile.
+    // The background image of the tile.
+    private Image background;
+    // Text component for displaying numbers.
+    private TextMeshProUGUI text;
 
-    // Awake is called when the script instance is being loaded.
-    // Initialize the background and text components by finding them within the Tile's GameObject.
+    // Called when the script instance is being loaded.
+    // Initializes the background and text components by finding them within the Tile's GameObject.
     private void Awake()
     {
-        background = GetComponent<Image>();                        // Get the Image component attached to the tile
-        text = GetComponentInChildren<TextMeshProUGUI>();          // Find the TextMeshProUGUI component within child objects
+        background = GetComponent<Image>();                       // Get the Image component attached to the tile.
+        text = GetComponentInChildren<TextMeshProUGUI>();           // Find the TextMeshProUGUI component within child objects.
     }
 
-    // Method to set the state of the tile, updating its appearance based on the given TileState.
+    // Sets the state of the tile, updating its appearance based on the given TileState.
     public void SetState(TileState state)
     {
-        this.state = state;                      // Set the internal state
-
-        background.color = state.backgroundColor; // Apply the background color from the TileState
-        text.color = state.textColor;             // Apply the text color from the TileState
-        text.text = state.number.ToString();      // Update the displayed number from the TileState
+        this.state = state;                        // Set the internal state.
+        background.color = state.backgroundColor;  // Apply the background color from the TileState.
+        text.color = state.textColor;              // Apply the text color from the TileState.
+        text.text = state.number.ToString();       // Update the displayed number from the TileState.
     }
 
-    // Method to spawn a tile at a given cell.
+    // Spawns a tile at a given cell.
     // Sets up the relationship between the tile and the cell and moves the tile's position to the cell's position.
     public void Spawn(TileCell cell)
     {
-        if (this.cell != null) {
-            this.cell.tile = null; // Unlink the tile from the current cell
+        if (this.cell != null)
+        {
+            this.cell.tile = null; // Unlink the tile from the current cell.
         }
 
-        this.cell = cell;          // Assign the new cell to the tile
-        this.cell.tile = this;     // Point the cell's tile to this tile
+        this.cell = cell;         // Assign the new cell to the tile.
+        this.cell.tile = this;    // Point the cell's tile to this tile.
 
-        // Set the position of the tile to align with the cell's position in the grid
+        // Set the position of the tile to align with the cell's position in the grid.
         transform.position = cell.transform.position;
     }
 
-    // Method to move the tile to a new cell with a smooth animation.
+    // Moves the tile to a new cell with a smooth animation.
     // Updates cell references and triggers the animation coroutine.
     public void MoveTo(TileCell cell)
     {
-        if (this.cell != null) {
-            this.cell.tile = null; // Unlink the tile from the current cell
+        if (this.cell != null)
+        {
+            this.cell.tile = null; // Unlink the tile from the current cell.
         }
 
-        this.cell = cell;          // Assign the new cell to the tile
-        this.cell.tile = this;     // Point the cell's tile to this tile
+        this.cell = cell;         // Assign the new cell to the tile.
+        this.cell.tile = this;    // Point the cell's tile to this tile.
 
-        // Start the animation coroutine to move the tile to the new cell's position
+        // Start the animation coroutine to move the tile to the new cell's position.
         StartCoroutine(Animate(cell.transform.position, false, false));
     }
 
-    // Method to merge the tile with another tile located in a different cell.
+    // Merges the tile with another tile located in a different cell.
     // The original tile is removed upon completion of the merging animation.
-    // Takes in a bool to detect if tunnelling has occured. 
+    // Takes in a bool to detect if tunneling has occurred.
     public void Merge(TileCell cell, bool tunneling)
     {
-        if (this.cell != null) {
-            this.cell.tile = null; // Unlink the tile from the current cell
+        if (this.cell != null)
+        {
+            this.cell.tile = null; // Unlink the tile from the current cell.
         }
 
-        this.cell = null;          // Clear this tile's cell reference
-        cell.tile.locked = true;   // Lock the target cell to prevent further movement
+        this.cell = null;          // Clear this tile's cell reference.
+        cell.tile.locked = true;   // Lock the target cell to prevent further movement.
 
-        // Start the animation coroutine to move the tile to the merging cell and then remove it
+        // Start the animation coroutine to move the tile to the merging cell and then remove it.
         StartCoroutine(Animate(cell.transform.position, true, tunneling));
     }
 
-    // Coroutine to animate the movement of the tile to a target position.
-    // Takes the target position as 'to' and whether the tile will be destroyed after merging as 'merging'.
-    // takes in a bool to detect if tunnelling has occured. 
+    // Animates the movement of the tile to a target position.
+    // 'to' is the target position, 'merging' indicates if the tile will be destroyed after merging,
+    // and 'tunnel' detects if tunneling has occurred.
     private IEnumerator Animate(Vector3 to, bool merging, bool tunnel)
     {
-        float elapsed = 0f;       // Time elapsed since the animation started
-        float duration = 0.1f;    // Total duration of the animation
+        float elapsed = 0f;       // Time elapsed since the animation started.
+        float duration = 0.1f;    // Total duration of the animation.
 
-        Vector3 from = transform.position; // Starting position of the tile
+        Vector3 from = transform.position; // Starting position of the tile.
 
-        // Lerp (linearly interpolate) between the start and end positions over the animation duration
+        // Lerp (linearly interpolate) between the start and end positions over the animation duration.
         while (elapsed < duration)
         {
             transform.position = Vector3.Lerp(from, to, elapsed / duration);
-            elapsed += Time.deltaTime; // Increment elapsed time by the time since the last frame
-            yield return null;         // Wait until the next frame before continuing the loop
+            elapsed += Time.deltaTime; // Increment elapsed time by the time since the last frame.
+            yield return null;         // Wait until the next frame before continuing the loop.
         }
 
-        // Ensure the tile reaches its target position
+        // Ensure the tile reaches its target position.
         transform.position = to;
 
         if (tunnel == true)
         {
-          // here, an animation of some sort or a visual effect should play
-          Debug.Log("Tunneling Occured");
+            // Play an animation or visual effect to indicate tunneling.
+            Debug.Log("Tunneling Occurred");
         }
 
-        // If the tile is merging, destroy it after reaching the final position
-        if (merging) {
+        // If the tile is merging, destroy it after reaching the final position.
+        if (merging)
+        {
             Destroy(gameObject);
         }
-      
     }
 
-    // NOTE TO SELF: potentially need to make a sperate function for tunneling animation.
-    // otherwise, add the animation/effect to the "animation" function
-
+    // NOTE: Consider creating a separate function for tunneling animations in the future.
 }

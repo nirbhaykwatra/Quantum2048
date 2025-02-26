@@ -1,24 +1,20 @@
 using UnityEngine;
 
-/// <summary>
-/// Manages background music playback using the singleton pattern, ensuring that only one instance persists across scenes.
-/// </summary>
+/*
+ * AudioManager Class
+ * ------------------
+ * Manages background music playback using the singleton pattern, ensuring that only one instance persists across scenes.
+ */
 public class AudioManager : MonoBehaviour
 {
-    /// <summary>
-    /// Singleton instance of the AudioManager.
-    /// </summary>
+    // Singleton instance of the AudioManager.
     public static AudioManager Instance;
 
-    /// <summary>
-    /// AudioSource component used to play and control background music.
-    /// </summary>
+    // AudioSource component used to play and control background music.
     private AudioSource audioSource;
 
-    /// <summary>
-    /// Called when the script instance is being loaded.
-    /// Implements the singleton pattern, sets up the AudioSource, and begins music playback.
-    /// </summary>
+    // Called when the script instance is being loaded.
+    // Implements the singleton pattern, sets up the AudioSource, and begins music playback.
     private void Awake()
     {
         // Ensure that only one instance of AudioManager exists across scenes.
@@ -47,10 +43,8 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Toggles the background music playback.
-    /// Pauses the music if it's currently playing, or resumes playback if it is paused.
-    /// </summary>
+    // Toggles the background music playback.
+    // Pauses the music if it's currently playing, or resumes playback if it is paused.
     public void ToggleMusic()
     {
         if (audioSource.isPlaying)
