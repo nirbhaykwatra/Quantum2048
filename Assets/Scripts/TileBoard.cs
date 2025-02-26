@@ -15,6 +15,7 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles;
     private bool waiting;
     private int tunnel_merge;
+    private int? cachedThreshold = null;
     private GameObject tunnelingPopup;
     private GameObject infoButton;
     PopUpSystem popUpSystem;
@@ -162,7 +163,7 @@ public class TileBoard : MonoBehaviour
                 }
                 else if (GlobalData.level == "tunnelling2")
                 {
-                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile, 4))
+                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile, 2, 4, 8, 16))
                     {
                         TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
                         return true;
@@ -184,10 +185,27 @@ public class TileBoard : MonoBehaviour
         return false;
     }
 
-    private bool CanMerge(Tile a, Tile b, int threshold = 0)
+    private bool CanMerge(Tile a, Tile b, params int[] thresholds)
     {
-        // Check if both tiles have the same state, are not locked, and their values are above the threshold
-        return a.state == b.state && !b.locked && a.state.number > threshold && b.state.number > threshold;
+        int selectedThreshold = 0;
+
+        if (thresholds != null && thresholds.Length > 0)
+        {
+            if (!cachedThreshold.HasValue)
+            {
+                cachedThreshold = (thresholds.Length == 1)
+                    ? thresholds[0]
+                    : thresholds[Random.Range(0, thresholds.Length)];
+            }
+
+            selectedThreshold = cachedThreshold.Value;
+            Debug.Log("Selected threshold: " + selectedThreshold);
+        }
+
+        return a.state == b.state &&
+            !b.locked &&
+            a.state.number > selectedThreshold &&
+            b.state.number > selectedThreshold;
     }
 
     private void MergeTiles(Tile a, Tile b)
