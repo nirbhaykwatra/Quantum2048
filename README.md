@@ -64,15 +64,11 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Key Implementation:**  
   The `Awake()` method checks for an existing instance and uses `DontDestroyOnLoad` to persist the manager across scenes.
 
-[Jump to top](#top)
-
 ### Serialized Fields and Components
 - **Key Fields:**  
   - **TileBoard (`board`):** Manages game tiles.
   - **CanvasGroup (`gameOver`):** Controls the game over screen's UI.
   - **TextMeshProUGUI (`scoreText`, `hiscoreText`):** Display current score and high score.
-
-[Jump to top](#top)
 
 ### Game Lifecycle and Score Management
 - **NewGame Method:**  
@@ -81,8 +77,6 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
   Disables gameplay and triggers a fade-in effect for the game over screen.
 - **Score Methods:**  
   `IncreaseScore` and `SetScore` update the score and save the high score using Unity's `PlayerPrefs`.
-
-[Jump to top](#top)
 
 ### Fade Coroutine
 - **Purpose:**  
@@ -99,8 +93,6 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
   Ensures that only one instance of the `AudioManager` persists between scenes.
 - **Implementation:**  
   The `Awake()` method uses a singleton pattern with `DontDestroyOnLoad`.
-
-[Jump to top](#top)
 
 ### Audio Source Configuration and Toggle
 - **Setup:**  
@@ -120,8 +112,6 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Tutorial Texts:**  
   Initializes arrays of title and description texts based on the current game level (e.g., tunnelling levels).
 
-[Jump to top](#top)
-
 ### Managing Pause and Tutorial Text
 - **Pause Method:**  
   Activates the pause panel and sets `Time.timeScale` to 0.
@@ -139,8 +129,6 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
   Isolates popup behavior (e.g., for tunnelling events) into a dedicated script.
 - **Implementation:**  
   Finds the "Tunnelling1" popup and "Info Button" within the Canvas and manages their activation.
-
-[Jump to top](#top)
 
 ### Handling Pause via Popups
 - **Tunneling Method:**  
@@ -160,8 +148,6 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Initialization:**  
   Finds and configures UI elements, deactivating secondary progress bars until needed.
 
-[Jump to top](#top)
-
 ### Progress Bar Updates and Completion
 - **Updates:**  
   Adjusts fill amounts based on progress values.
@@ -180,14 +166,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Functionality:**  
   Each tile holds a state (including number and colors) and is linked to a specific grid cell.
 
-[Jump to top](#top)
-
 ### Component Initialization
 - **Key Components:**  
   - **Image:** Provides the tile's background.
   - **TextMeshProUGUI:** Displays the tile's number.
-
-[Jump to top](#top)
 
 ### Tile Behaviors: Spawning, Moving, and Merging
 - **Spawn():**  
@@ -213,8 +195,6 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
   - **Tile List:** Maintains all active tiles on the board.
   - **UI and Popups:** References for tunnelling popups, info buttons, and progress components.
 
-[Jump to top](#top)
-
 ### Tile Creation, Movement, and Merging
 - **CreateTile():**  
   Instantiates a new tile in a random empty cell.
@@ -225,15 +205,11 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **MergeTiles() and TunnelingMergeTiles():**  
   Merge tiles and update states, with tunneling merges triggering popups, particle effects, and progress bar updates.
 
-[Jump to top](#top)
-
 ### Tunneling Merges and Progress Updates
 - **Tunneling Logic:**  
   Checks game levels (e.g., "tunnelling1" or "tunnelling2") and manages the tunneling merge counter.
 - **UI Updates:**  
   Updates radial progress values and triggers related UI changes and effects.
-
-[Jump to top](#top)
 
 ### Game Over Detection
 - **CheckForGameOver():**  
@@ -270,15 +246,11 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Initialization:**  
   In `Awake()`, cells are assigned coordinates based on their index and grid dimensions.
 
-[Jump to top](#top)
-
 ### Cell Retrieval and Navigation
 - **GetCell Methods:**  
   Retrieve a cell using either a `Vector2Int` or individual x and y coordinates.
 - **GetAdjacentCell():**  
   Returns a cell adjacent to a given cell in a specified direction (with y-axis adjustments for Unity's layout).
-
-[Jump to top](#top)
 
 ### Random Empty Cell Selection
 - **GetRandomEmptyCell():**  
