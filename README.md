@@ -1,6 +1,15 @@
 # 2048
 
-> 2048 is a puzzle game written by Italian web developer Gabriele Cirulli and published on GitHub. The objective of the game is to slide numbered tiles on a grid to combine them until reaching the number 2048. It was originally written in JavaScript and CSS over a weekend, and released on March 9th, 2014 as free and open-source software.
+> 2048 is a puzzle game originally written by Italian web developer Gabriele Cirulli and published on GitHub. The objective of the game is to slide numbered tiles on a grid to combine them until reaching the number 2048. It was originally written in JavaScript and CSS over a weekend, and released on March 9th, 2014 as free and open-source software. Inspired by the original 2048 game, we've created a Quantum 2048 game that teaches the player some important concepts in quantum computing with the help of quantum-inspired 2048 gameplay.
+
+<a id="top"></a>
+# Quantum 2048 Code Walkthrough
+
+This guide provides an in-depth overview of the core scripts used in Quantum 2048. It is designed to help developers understand the game’s architecture and serves as a reference for making changes or adding new features.
+
+[Jump to top](#top)
+
+---
 
 ## Table of Contents
 
@@ -45,6 +54,8 @@
 13. [Making Changes to the Code](#making-changes-to-the-code)
 14. [Additional Notes](#additional-notes)
 
+[Jump to top](#top)
+
 ---
 
 ## 1. GameManager.cs
@@ -55,23 +66,31 @@
 - **Key Implementation:**  
   The `Awake()` method checks for an existing instance and uses `DontDestroyOnLoad` to persist the manager across scenes.
 
+[Jump to top](#top)
+
 ### Serialized Fields and Components
 - **Key Fields:**  
   - **TileBoard (`board`):** Manages game tiles.
   - **CanvasGroup (`gameOver`):** Controls the game over screen's UI.
   - **TextMeshProUGUI (`scoreText`, `hiscoreText`):** Display current score and high score.
 
+[Jump to top](#top)
+
 ### Game Lifecycle and Score Management
 - **NewGame Method:**  
-  Resets the score, updates high score UI, clears the board, and spawns two new tiles.
+  Resets the score, updates UI, hides the game over screen, clears the board, and spawns two tiles.
 - **GameOver Method:**  
-  Disables board interaction and triggers a fade-in effect for the game over screen.
+  Disables gameplay and triggers a fade-in effect for the game over screen.
 - **Score Methods:**  
   `IncreaseScore` and `SetScore` update the score and save the high score using Unity's `PlayerPrefs`.
 
+[Jump to top](#top)
+
 ### Fade Coroutine
 - **Purpose:**  
-  Smoothly transitions UI elements (e.g., fading the game over screen) by interpolating the alpha value over time.
+  Smoothly interpolates the UI's alpha to transition elements like the game over screen.
+
+[Jump to top](#top)
 
 ---
 
@@ -83,11 +102,15 @@
 - **Implementation:**  
   The `Awake()` method uses a singleton pattern with `DontDestroyOnLoad`.
 
+[Jump to top](#top)
+
 ### Audio Source Configuration and Toggle
-- **Audio Source:**  
-  Retrieves the `AudioSource` component, sets it to loop, and starts playback.
+- **Setup:**  
+  Retrieves and configures the `AudioSource` component to loop background music.
 - **ToggleMusic():**  
-  Pauses or resumes background music based on its current state.
+  Pauses or resumes music playback based on its current state.
+
+[Jump to top](#top)
 
 ---
 
@@ -99,11 +122,15 @@
 - **Tutorial Texts:**  
   Initializes arrays of title and description texts based on the current game level (e.g., tunnelling levels).
 
+[Jump to top](#top)
+
 ### Managing Pause and Tutorial Text
 - **Pause Method:**  
   Activates the pause panel and sets `Time.timeScale` to 0.
 - **Continue Method:**  
   Either displays the next set of tutorial texts or resumes gameplay by deactivating the pause panel and restoring `Time.timeScale`.
+
+[Jump to top](#top)
 
 ---
 
@@ -115,11 +142,15 @@
 - **Implementation:**  
   Finds the "Tunnelling1" popup and "Info Button" within the Canvas and manages their activation.
 
+[Jump to top](#top)
+
 ### Handling Pause via Popups
 - **Tunneling Method:**  
   Activates the tunneling popup and calls the pause functionality.
 - **Pause Method:**  
   Adjusts UI elements based on popup status (e.g., disables the Info Button when a popup is active).
+
+[Jump to top](#top)
 
 ---
 
@@ -127,15 +158,19 @@
 
 ### UI Component Setup
 - **Components:**  
-  Manages two radial progress bars, along with associated UI elements like icons and dialogs.
+  Manages two radial progress bars along with associated UI elements such as icons and dialogs.
 - **Initialization:**  
-  Finds and configures UI elements, including deactivating secondary progress bars until needed.
+  Finds and configures UI elements, deactivating secondary progress bars until needed.
+
+[Jump to top](#top)
 
 ### Progress Bar Updates and Completion
 - **Updates:**  
   Adjusts fill amounts based on progress values.
 - **Completion Coroutines:**  
   When a progress bar fills, it triggers a coroutine that changes colors, pauses the game, activates subsequent UI elements, and eventually resumes gameplay.
+
+[Jump to top](#top)
 
 ---
 
@@ -147,10 +182,14 @@
 - **Functionality:**  
   Each tile holds a state (including number and colors) and is linked to a specific grid cell.
 
+[Jump to top](#top)
+
 ### Component Initialization
 - **Key Components:**  
   - **Image:** Provides the tile's background.
   - **TextMeshProUGUI:** Displays the tile's number.
+
+[Jump to top](#top)
 
 ### Tile Behaviors: Spawning, Moving, and Merging
 - **Spawn():**  
@@ -158,9 +197,11 @@
 - **MoveTo():**  
   Animates the tile moving smoothly to a new cell.
 - **Merge():**  
-  Handles the merging of tiles (with support for tunneling merges), using a coroutine (`Animate()`) for smooth transitions.
+  Handles merging of tiles (with support for tunneling merges), using a coroutine (`Animate()`) for smooth transitions.
 - **Animation:**  
   The `Animate()` coroutine interpolates the tile’s position over a short duration.
+
+[Jump to top](#top)
 
 ---
 
@@ -174,6 +215,8 @@
   - **Tile List:** Maintains all active tiles on the board.
   - **UI and Popups:** References for tunnelling popups, info buttons, and progress components.
 
+[Jump to top](#top)
+
 ### Tile Creation, Movement, and Merging
 - **CreateTile():**  
   Instantiates a new tile in a random empty cell.
@@ -184,17 +227,23 @@
 - **MergeTiles() and TunnelingMergeTiles():**  
   Merge tiles and update states, with tunneling merges triggering popups, particle effects, and progress bar updates.
 
+[Jump to top](#top)
+
 ### Tunneling Merges and Progress Updates
 - **Tunneling Logic:**  
   Checks game levels (e.g., "tunnelling1" or "tunnelling2") and manages the tunneling merge counter.
 - **UI Updates:**  
   Updates radial progress values and triggers related UI changes and effects.
 
+[Jump to top](#top)
+
 ### Game Over Detection
 - **CheckForGameOver():**  
   Evaluates if no moves or merges remain and calls `GameManager.Instance.GameOver()` if the game is over.
 - **WaitForChangesCoroutine():**  
   Waits for all movements/merges to complete before adding a new tile and checking for game over conditions.
+
+[Jump to top](#top)
 
 ---
 
@@ -207,6 +256,8 @@
   - **Coordinates:** X and Y positions within the grid.
   - **Tile Reference:** Holds the tile currently occupying the cell.
   - **Convenience Properties:** `Empty` and `Occupied` for quick checks.
+
+[Jump to top](#top)
 
 ---
 
@@ -221,15 +272,21 @@
 - **Initialization:**  
   In `Awake()`, cells are assigned coordinates based on their index and grid dimensions.
 
+[Jump to top](#top)
+
 ### Cell Retrieval and Navigation
 - **GetCell Methods:**  
   Retrieve a cell using either a `Vector2Int` or individual x and y coordinates.
 - **GetAdjacentCell():**  
   Returns a cell adjacent to a given cell in a specified direction (with y-axis adjustments for Unity's layout).
 
+[Jump to top](#top)
+
 ### Random Empty Cell Selection
 - **GetRandomEmptyCell():**  
   Searches for an empty cell by iterating from a random starting index and wrapping around if necessary.
+
+[Jump to top](#top)
 
 ---
 
@@ -241,6 +298,8 @@
 - **Implementation:**  
   The `Awake()` method retrieves all `TileCell` components among the row’s child objects and stores them in an array.
 
+[Jump to top](#top)
+
 ---
 
 ## 11. TileState.cs
@@ -251,6 +310,8 @@
 - **Usage:**  
   Marked with `[CreateAssetMenu]`, it allows developers to create new tile state assets via the Unity Editor, making it easy to tweak visual and numerical aspects of tiles without modifying code.
 
+[Jump to top](#top)
+
 ---
 
 ## 12. tutorial.cs
@@ -260,11 +321,13 @@
   Manages the tutorial animations and transitions to the main game scene.
 - **Key Functionality:**  
   - **Animator Control:**  
-    The script retrieves the `Animator` component and uses an integer parameter ("Change") to progress through animations.
+    Retrieves the `Animator` component and uses an integer parameter ("Change") to progress through animations.
   - **Input Handling:**  
     Detects any key press to trigger the next animation.
   - **Scene Transition:**  
-    Once the "Change" parameter exceeds a threshold (greater than 5), the script loads the main game scene (named "2048").
+    Once the "Change" parameter exceeds 5, the script loads the main game scene ("2048").
+
+[Jump to top](#top)
 
 ---
 
@@ -278,6 +341,8 @@
   - Utilize modularity in scripts like **PopUpSystem.cs** and **PauseMenu.cs** to introduce new tutorial or popup sequences.
   - When adding new levels or features, create additional `TileState` assets to manage visual themes.
 
+[Jump to top](#top)
+
 ---
 
 ## 14. Additional Notes
@@ -285,6 +350,8 @@
 - **Code Structure:**  
   The codebase leverages Unity’s component-based architecture. Each script is focused on a specific aspect of the game (e.g., grid management, tile behavior, UI interactions).
 - **Debugging:**  
-  Look for `Debug.Log` statements within the scripts to trace functionality during development.
+  Use `Debug.Log` statements within the scripts to trace functionality during development.
 - **Asset Management:**  
   ScriptableObjects (like `TileState.cs`) allow you to manage game data externally, reducing the need for hard-coded values.
+
+[Jump to top](#top)
