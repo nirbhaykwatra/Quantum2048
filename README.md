@@ -7,8 +7,6 @@
 
 This guide provides an in-depth overview of the core scripts used in Quantum 2048. It is designed to help developers understand the game’s architecture and serves as a reference for making changes or adding new features.
 
-[Jump to top](#top)
-
 ---
 
 ## Table of Contents
