@@ -1,5 +1,6 @@
 # How to add your Unity game to a Wordpress website
 
+> This guide provides a step-by-step process for seamlessly integrating your Unity game into a WordPress site. These steps apply regardless of which game you're exporting.
 
 1\. Click "**File**"
 
