@@ -125,6 +125,5 @@
 25\. Here's an example that shows how you can embed the newly exported game to this page via an HTML block.
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2025-03-05/3a12a31d-ab80-4e60-a2a9-ae6285928f36/ascreenshot.jpeg?tl_px=369,161&br_px=1745,930&force_format=jpeg&q=100&width=1120.0&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=524,276)
-#### [Made with Scribe](https://scribehow.com/shared/Unity_editor_Workflow__j7gJTM0cQ1KK7FVd7svV2Q)
 
 
