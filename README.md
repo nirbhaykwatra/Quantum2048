@@ -51,6 +51,7 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
     - [Tutorial Flow and Scene Transition](#tutorial-flow-and-scene-transition)
 13. [Making Changes to the Code](#making-changes-to-the-code)
 14. [Additional Notes](#additional-notes)
+15. [Adding your Unity game to Wordpress](#adding-your-unity-game-to-wordpress)
 
 [Jump to top](#top)
 
@@ -325,3 +326,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
   ScriptableObjects (like `TileState.cs`) allow you to manage game data externally, reducing the need for hard-coded values.
 
 [Jump to top](#top)
+
+---
+
+## 15. Adding your Unity game to Wordpress
+
+- The `Docs/` folder contains Step-by-step instructions on how to export your Unity game and add it to a Wordpress site.
+- These instructions are available in Markdown (.md) and PDF (.pdf) formats.
