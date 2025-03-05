@@ -57,20 +57,24 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="gamemanagercs"></a>
 ## 1. GameManager.cs
 
+<a id="singleton-setup-and-lifecycle"></a>
 ### Singleton Setup and Lifecycle
 - **Purpose:**  
   Ensures a single instance of the `GameManager` exists throughout the game.
 - **Key Implementation:**  
   The `Awake()` method checks for an existing instance and uses `DontDestroyOnLoad` to persist the manager across scenes.
 
+<a id="serialized-fields-and-components"></a>
 ### Serialized Fields and Components
 - **Key Fields:**  
   - **TileBoard (`board`):** Manages game tiles.
   - **CanvasGroup (`gameOver`):** Controls the game over screen's UI.
   - **TextMeshProUGUI (`scoreText`, `hiscoreText`):** Display current score and high score.
 
+<a id="game-lifecycle-and-score-management"></a>
 ### Game Lifecycle and Score Management
 - **NewGame Method:**  
   Resets the score, updates UI, hides the game over screen, clears the board, and spawns two tiles.
@@ -79,6 +83,7 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Score Methods:**  
   `IncreaseScore` and `SetScore` update the score and save the high score using Unity's `PlayerPrefs`.
 
+<a id="fade-coroutine"></a>
 ### Fade Coroutine
 - **Purpose:**  
   Smoothly interpolates the UI's alpha to transition elements like the game over screen.
@@ -87,14 +92,17 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="audiomanagercs"></a>
 ## 2. AudioManager.cs
 
+<a id="singleton-and-persistence"></a>
 ### Singleton and Persistence
 - **Purpose:**  
   Ensures that only one instance of the `AudioManager` persists between scenes.
 - **Implementation:**  
   The `Awake()` method uses a singleton pattern with `DontDestroyOnLoad`.
 
+<a id="audio-source-configuration-and-toggle"></a>
 ### Audio Source Configuration and Toggle
 - **Setup:**  
   Retrieves and configures the `AudioSource` component to loop background music.
@@ -105,14 +113,17 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="pausemenucs"></a>
 ## 3. PauseMenu.cs
 
+<a id="ui-elements-and-initialization"></a>
 ### UI Elements and Initialization
 - **UI References:**  
   Dynamically locates UI elements such as the Competency Counter, Info Button, and the pause panel.
 - **Tutorial Texts:**  
   Initializes arrays of title and description texts based on the current game level (e.g., tunnelling levels).
 
+<a id="managing-pause-and-tutorial-text"></a>
 ### Managing Pause and Tutorial Text
 - **Pause Method:**  
   Activates the pause panel and sets `Time.timeScale` to 0.
@@ -123,14 +134,17 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="popupsystemcs"></a>
 ## 4. PopUpSystem.cs
 
+<a id="popup-and-ui-element-management"></a>
 ### Popup and UI Element Management
 - **Purpose:**  
   Isolates popup behavior (e.g., for tunnelling events) into a dedicated script.
 - **Implementation:**  
   Finds the "Tunnelling1" popup and "Info Button" within the Canvas and manages their activation.
 
+<a id="handling-pause-via-popups"></a>
 ### Handling Pause via Popups
 - **Tunneling Method:**  
   Activates the tunneling popup and calls the pause functionality.
@@ -141,14 +155,17 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="radialprogresscs"></a>
 ## 5. RadialProgress.cs
 
+<a id="ui-component-setup"></a>
 ### UI Component Setup
 - **Components:**  
   Manages two radial progress bars along with associated UI elements such as icons and dialogs.
 - **Initialization:**  
   Finds and configures UI elements, deactivating secondary progress bars until needed.
 
+<a id="progress-bar-updates-and-completion"></a>
 ### Progress Bar Updates and Completion
 - **Updates:**  
   Adjusts fill amounts based on progress values.
@@ -159,19 +176,23 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tilecs"></a>
 ## 6. Tile.cs
 
+<a id="overview-and-purpose"></a>
 ### Overview and Purpose
 - **Purpose:**  
   Represents an individual tile on the game board.
 - **Functionality:**  
   Each tile holds a state (including number and colors) and is linked to a specific grid cell.
 
+<a id="component-initialization"></a>
 ### Component Initialization
 - **Key Components:**  
   - **Image:** Provides the tile's background.
   - **TextMeshProUGUI:** Displays the tile's number.
 
+<a id="tile-behaviors-spawning-moving-and-merging"></a>
 ### Tile Behaviors: Spawning, Moving, and Merging
 - **Spawn():**  
   Places the tile in a designated cell.
@@ -186,8 +207,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tileboardcs"></a>
 ## 7. TileBoard.cs
 
+<a id="board-initialization-and-setup"></a>
 ### Board Initialization and Setup
 - **Purpose:**  
   Manages the entire game board, including tile creation, movement, and merging.
@@ -196,6 +219,7 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
   - **Tile List:** Maintains all active tiles on the board.
   - **UI and Popups:** References for tunnelling popups, info buttons, and progress components.
 
+<a id="tile-creation-movement-and-merging"></a>
 ### Tile Creation, Movement, and Merging
 - **CreateTile():**  
   Instantiates a new tile in a random empty cell.
@@ -206,12 +230,14 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **MergeTiles() and TunnelingMergeTiles():**  
   Merge tiles and update states, with tunneling merges triggering popups, particle effects, and progress bar updates.
 
+<a id="tunneling-merges-and-progress-updates"></a>
 ### Tunneling Merges and Progress Updates
 - **Tunneling Logic:**  
   Checks game levels (e.g., "tunnelling1" or "tunnelling2") and manages the tunneling merge counter.
 - **UI Updates:**  
   Updates radial progress values and triggers related UI changes and effects.
 
+<a id="game-over-detection"></a>
 ### Game Over Detection
 - **CheckForGameOver():**  
   Evaluates if no moves or merges remain and calls `GameManager.Instance.GameOver()` if the game is over.
@@ -222,8 +248,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tilecellcs"></a>
 ## 8. TileCell.cs
 
+<a id="tilecell-overview-and-properties"></a>
 ### Overview and Properties
 - **Purpose:**  
   Represents an individual cell in the grid.
@@ -236,8 +264,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tilegridcs"></a>
 ## 9. TileGrid.cs
 
+<a id="grid-structure-and-initialization"></a>
 ### Grid Structure and Initialization
 - **Purpose:**  
   Manages the overall grid layout.
@@ -247,12 +277,14 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Initialization:**  
   In `Awake()`, cells are assigned coordinates based on their index and grid dimensions.
 
+<a id="cell-retrieval-and-navigation"></a>
 ### Cell Retrieval and Navigation
 - **GetCell Methods:**  
   Retrieve a cell using either a `Vector2Int` or individual x and y coordinates.
 - **GetAdjacentCell():**  
   Returns a cell adjacent to a given cell in a specified direction (with y-axis adjustments for Unity's layout).
 
+<a id="random-empty-cell-selection"></a>
 ### Random Empty Cell Selection
 - **GetRandomEmptyCell():**  
   Searches for an empty cell by iterating from a random starting index and wrapping around if necessary.
@@ -261,8 +293,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tilerowcs"></a>
 ## 10. TileRow.cs
 
+<a id="row-representation-and-initialization"></a>
 ### Row Representation and Initialization
 - **Purpose:**  
   Represents a row in the grid.
@@ -273,8 +307,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tilestatecs"></a>
 ## 11. TileState.cs
 
+<a id="scriptable-object-for-tile-states"></a>
 ### Scriptable Object for Tile States
 - **Purpose:**  
   Defines the state of a tile (number, background color, text color).
@@ -285,8 +321,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="tutorialcs"></a>
 ## 12. tutorial.cs
 
+<a id="tutorial-flow-and-scene-transition"></a>
 ### Tutorial Flow and Scene Transition
 - **Purpose:**  
   Manages the tutorial animations and transitions to the main game scene.
@@ -302,6 +340,7 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="making-changes-to-the-code"></a>
 ## 13. Making Changes to the Code
 
 - **Extending Functionality:**  
@@ -316,6 +355,7 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="additional-notes"></a>
 ## 14. Additional Notes
 
 - **Code Structure:**  
@@ -329,7 +369,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 
 ---
 
+<a id="adding-your-unity-game-to-wordpress"></a>
 ## 15. Adding your Unity game to Wordpress
 
 - The `Docs/` folder contains Step-by-step instructions on how to export your Unity game and add it to a Wordpress site.
 - These instructions are available in Markdown (.md) and PDF (.pdf) formats.
+
+[Jump to top](#top)
