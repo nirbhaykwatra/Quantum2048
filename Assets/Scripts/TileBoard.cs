@@ -7,6 +7,15 @@ using UnityEngine;
  * ---------------
  * Manages the game board by handling tile creation, movement, merging (including tunneling merges),
  * updating progress bars, and checking for game over conditions.
+ *
+ * Additional Details:
+ * - Tunneling merges (for "tunnelling1" and "tunnelling2") skip over a "blocker" tile if the threshold conditions are met
+ *   (in "tunnelling2", thresholds {2,4,8,16} are considered).
+ * - On the first tunneling merge in "tunnelling1", a popup and notification sound are triggered,
+ *   and a particle effect is played if assigned.
+ * - The 'infoButton' remains inactive by default but can be enabled if you want to display additional instructions.
+ * - The "blocker" tile in tunneling merges is not destroyed by default, though there's a commented-out line to do so.
+ * - A debug warning may mention "Background Music" even though it's not used in this script, left for potential expansion.
  */
 public class TileBoard : MonoBehaviour
 {
@@ -288,7 +297,7 @@ public class TileBoard : MonoBehaviour
     }
 
     // Performs a tunneling merge between tiles.
-    // Increments the tunneling merge counter, triggers popups and particle effects, and merges tiles.
+    // Increments the tunneling merge counter, triggers popups and particle effects (on first merge), and merges tiles.
     private void TunnelingMergeTiles(Tile a, Tile blocker, Tile b)
     {
         tunnel_merge = tunnel_merge + 1;
