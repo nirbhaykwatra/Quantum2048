@@ -215,9 +215,10 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **Purpose:**  
   Manages the entire game board, including tile creation, movement, and merging.
 - **Components:**  
-  - **TileGrid:** Organizes grid cells.
-  - **Tile List:** Maintains all active tiles on the board.
-  - **UI and Popups:** References for tunnelling popups, info buttons, and progress components.
+  - **TileGrid:** Organizes grid cells.  
+  - **Tile List:** Maintains all active tiles on the board.  
+  - **UI and Popups:** References for tunnelling popups, info buttons, and progress components.  
+    - **Info Button Inactive by Default:** The `infoButton` is disabled in `Awake()` but can be enabled if desired.
 
 <a id="tile-creation-movement-and-merging"></a>
 ### Tile Creation, Movement, and Merging
@@ -228,14 +229,17 @@ This guide provides an in-depth overview of the core scripts used in Quantum 204
 - **MoveTile():**  
   Handles individual tile movement and checks for merge conditions.
 - **MergeTiles() and TunnelingMergeTiles():**  
-  Merge tiles and update states, with tunneling merges triggering popups, particle effects, and progress bar updates.
+  Merges tiles and updates their states. Tunneling merges skip over a “blocker” tile (which remains on the board by default) and can trigger popups, particle effects, and progress bar updates.
 
 <a id="tunneling-merges-and-progress-updates"></a>
 ### Tunneling Merges and Progress Updates
-- **Tunneling Logic:**  
-  Checks game levels (e.g., "tunnelling1" or "tunnelling2") and manages the tunneling merge counter.
+- **Tunneling Logic (tunnelling1 and tunnelling2):**  
+  - **‘tunnelling1’:** The first tunneling merge triggers a popup and sound effect (plus an optional particle effect if assigned).  
+  - **‘tunnelling2’:** Merges only occur if both tiles exceed a randomly chosen threshold (from 2, 4, 8, or 16).  
+  - **Blocker Tile Handling:** By default, the middle “blocker” tile remains after a tunneling merge (though the code includes a commented line to destroy it).
 - **UI Updates:**  
-  Updates radial progress values and triggers related UI changes and effects.
+  - Tracks the number of tunneling merges (`tunnel_merge`) to update radial progress bars.  
+  - Displays popups at key milestones (e.g., first tunneling merge).
 
 <a id="game-over-detection"></a>
 ### Game Over Detection
