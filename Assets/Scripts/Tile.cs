@@ -1,4 +1,3 @@
-// Import necessary namespaces for Unity and TextMeshPro functionality
 using System.Collections;   // Enables use of IEnumerator for coroutines
 using TMPro;                // For text rendering with TextMeshPro
 using UnityEngine;          // Main Unity namespace
