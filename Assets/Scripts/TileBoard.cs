@@ -29,8 +29,13 @@ public class TileBoard : MonoBehaviour
     // Tile prefab for instantiating new tiles.
     [SerializeField] private Tile tilePrefab;
     // Array of tile states used to update tile appearances.
-    [SerializeField] private TileState[] tileStates;
+    public TileState[] tileStates;
+    
+    [Tooltip("Percentage chance of spawning a superposition tile.")]
+    [SerializeField] private float _superpositionChance;
 
+
+    private GameObject _canvas;
     // Reference to the grid component that manages cell layout.
     private TileGrid grid;
     // List of tiles currently present on the board.
@@ -41,6 +46,8 @@ public class TileBoard : MonoBehaviour
     private int tunnel_merge;
     // Cached threshold value used for merge comparisons.
     private int? cachedThreshold = null;
+
+    private bool _superposition = false;
 
     // Reference to the tunneling popup GameObject.
     private GameObject tunnelingPopup;
@@ -65,17 +72,17 @@ public class TileBoard : MonoBehaviour
         // Initialize the tunneling merge counter.
         tunnel_merge = 0;
         // Get the PopUpSystem component from the PopUpManager GameObject.
-        popUpSystem = GameObject.Find("PopUpManager").GetComponent<PopUpSystem>();
+        popUpSystem = FindAnyObjectByType<PopUpSystem>().GetComponent<PopUpSystem>();
     
         // Find the Canvas GameObject in the scene.
-        GameObject canvas = GameObject.Find("Canvas");
+        _canvas = FindAnyObjectByType<Canvas>().gameObject;
         
-        if (canvas != null)
+        if (_canvas != null)
         {
             // Find the "Tunnelling1" popup under the Canvas.
-            tunnelingPopup = canvas.transform.Find("Tunnelling1")?.gameObject;
+            tunnelingPopup = _canvas.transform.Find("Tunnelling1")?.gameObject;
             // Find the "Info Button" under the Canvas.
-            infoButton = canvas.transform.Find("Info Button")?.gameObject;
+            infoButton = _canvas.transform.Find("Info Button")?.gameObject;
 
             // Get the RadialProgress components from the competency counter GameObjects.
             radialProgress = tunnellingCompetencyCounter.GetComponent<RadialProgress>();
@@ -101,14 +108,15 @@ public class TileBoard : MonoBehaviour
     // Clears the board by unlinking cells and destroying all existing tiles.
     public void ClearBoard()
     {
+        Debug.Log("Cleared board.");
         // Unlink tiles from all grid cells.
-        foreach (var cell in grid.cells)
+        foreach (TileCell cell in grid.cells)
         {
             cell.tile = null;
         }
 
         // Destroy all tile GameObjects.
-        foreach (var tile in tiles)
+        foreach (Tile tile in tiles)
         {
             Destroy(tile.gameObject);
         }
@@ -120,14 +128,17 @@ public class TileBoard : MonoBehaviour
     // Creates a new tile on the board.
     public void CreateTile()
     {
+        
         // Instantiate a new tile from the tile prefab as a child of the grid.
         Tile tile = Instantiate(tilePrefab, grid.transform);
         // Set its initial state.
-        tile.SetState(tileStates[0]);
+        tile.Superposition = Random.Range(0f, 100f) <= _superpositionChance;
         // Place the tile in a random empty cell.
         tile.Spawn(grid.GetRandomEmptyCell());
         // Add the tile to the list.
         tiles.Add(tile);
+        
+        Debug.Log($"Created a tile with state {tile.state.number}.");
     }
 
     // Called once per frame to handle player input and update progress values.
@@ -249,6 +260,7 @@ public class TileBoard : MonoBehaviour
         if (newCell != null)
         {
             tile.MoveTo(newCell);
+            if (_superposition) tile.SetState(tileStates[Random.Range(0, 4)]);
             return true;
         }
 
@@ -285,22 +297,25 @@ public class TileBoard : MonoBehaviour
     // Tile 'a' is merged into tile 'b', which then updates its state.
     private void MergeTiles(Tile a, Tile b)
     {
+        a.Superposition = false;
         tiles.Remove(a);         // Remove tile 'a' from the board.
         a.Merge(b.cell, false);  // Merge tile 'a' into tile 'b' without tunneling.
-
+        
         // Determine the new state for tile 'b'.
         int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
         TileState newState = tileStates[index];
 
         b.SetState(newState);                               // Update tile 'b' with the new state.
         GameManager.Instance.IncreaseScore(newState.number);  // Increase the game score.
+        Debug.Log($"Tile state {a.state.number} changed to {b.state.number}.\nTile b state: {b.state.number}");
     }
 
     // Performs a tunneling merge between tiles.
     // Increments the tunneling merge counter, triggers popups and particle effects (on first merge), and merges tiles.
     private void TunnelingMergeTiles(Tile a, Tile blocker, Tile b)
     {
-        tunnel_merge = tunnel_merge + 1;
+        a.Superposition = false;
+        tunnel_merge += 1;
         if (tunnel_merge == 1 && tunnelingPopup != null && GlobalData.level == "tunnelling1")
         {
             // Activate the tunneling popup and play the notification sound for the first tunneling merge.
@@ -318,7 +333,8 @@ public class TileBoard : MonoBehaviour
                 Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
             }
         }
-    
+
+        
         tiles.Remove(a);           // Remove the merged tile.
         a.Merge(b.cell, true);     // Merge tile 'a' into tile 'b' with tunneling.
 

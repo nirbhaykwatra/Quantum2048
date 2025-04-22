@@ -2,12 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-/*
- * RadialProgress Class
- * ----------------------
- * Manages and updates two radial progress bars, handling game pausing and UI transitions when progress completes.
- * This script updates progress values, changes UI colors upon completion, and triggers subsequent UI elements and routines.
- */
+/// <summary>
+/// Class <c>RadialProgress</c>
+/// 
+/// Manages and updates two radial progress bars, handling game pausing and UI transitions when progress completes.
+/// This script updates progress values, changes UI colors upon completion, and triggers subsequent UI elements and routines.
+/// </summary>
+ 
 public class RadialProgress : MonoBehaviour
 {
     // Image for the first radial progress bar (original).
