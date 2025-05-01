@@ -2,6 +2,7 @@ using System.Collections;   // Enables use of IEnumerator for coroutines
 using TMPro;                // For text rendering with TextMeshPro
 using UnityEngine;          // Main Unity namespace
 using UnityEngine.UI;       // For UI components like Image
+using Sirenix.OdinInspector;
 
 /*
  * Tile Class
@@ -19,7 +20,8 @@ public class Tile : MonoBehaviour
     // Indicates whether the tile is locked and cannot be moved.
     public bool locked { get; set; }
     
-    public bool Superposition { get; set; }
+    [TitleGroup("Properties")]
+    [ShowInInspector] public bool Superposition { get; set; }
 
     private TileState[] _tileStates;
 

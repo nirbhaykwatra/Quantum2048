@@ -333,7 +333,6 @@ public class TileBoard : MonoBehaviour
                 Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
             }
         }
-
         
         tiles.Remove(a);           // Remove the merged tile.
         a.Merge(b.cell, true);     // Merge tile 'a' into tile 'b' with tunneling.
@@ -344,6 +343,8 @@ public class TileBoard : MonoBehaviour
 
         b.SetState(newState);                              // Update tile 'b' with the new state.
         GameManager.Instance.IncreaseScore(newState.number); // Increase the game score.
+        a.Superposition = false;
+        b.Superposition = false;
 
         // Optionally, handle the blocker tile here (e.g., destroy it).
         // Destroy(blocker.gameObject); // Example: destroy the blocker tile.
