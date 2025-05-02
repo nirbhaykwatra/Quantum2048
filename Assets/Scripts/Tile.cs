@@ -22,7 +22,11 @@ public class Tile : MonoBehaviour
     
     [TitleGroup("Properties")]
     [ShowInInspector] public bool Superposition { get; set; }
+    
+    [TitleGroup("Properties")]
+    [ShowInInspector] public bool Entangled { get; set; }
 
+    private Tile _entangledTile;
     private TileState[] _tileStates;
 
     // Private fields for UI elements of the tile.
@@ -152,6 +156,30 @@ public class Tile : MonoBehaviour
             Superposition = false;
             Destroy(gameObject);
         }
+    }
+
+    public void EntangleButton()
+    {
+        if (!Entangled)
+        {
+            Entangle(this);
+        }
+        else
+        {
+            Disentangle();
+        }
+    }
+
+    public void Entangle(Tile tile)
+    {
+        _entangledTile = tile;
+        Entangled = true;
+    }
+
+    public void Disentangle()
+    {
+        _entangledTile = null;
+        Entangled = false;
     }
 
     // NOTE: Consider creating a separate function for tunneling animations in the future.
