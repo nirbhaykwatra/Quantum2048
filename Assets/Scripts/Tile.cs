@@ -46,7 +46,14 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if (Superposition) background.color = Color.cyan;
+        if (Superposition)
+        {
+            background.color = Color.cyan;
+        }
+        else
+        {
+            background.color = state.backgroundColor;
+        }
     }
 
     // Sets the state of the tile, updating its appearance based on the given TileState.
