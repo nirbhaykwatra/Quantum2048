@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using GameEvents;
 
 /*
@@ -49,6 +50,7 @@ public class TileBoard : MonoBehaviour
     private int tunnel_merge;
     // Cached threshold value used for merge comparisons.
     private int? cachedThreshold = null;
+    [SerializeField] private Image _background;
 
     private bool _superposition = false;
     private bool _entangleMode = false;
@@ -434,6 +436,11 @@ public class TileBoard : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void ChangeBackgroundColor()
+    {
+        _background.color = _entangleMode ? new Color32(255, 255, 255, 255) : new Color32(0, 7, 111, 255);
     }
 
     public void ToggleEntangleMode()
