@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameEvents;
 
 /*
  * TileBoard Class
@@ -31,6 +32,8 @@ public class TileBoard : MonoBehaviour
     // Array of tile states used to update tile appearances.
     public TileState[] tileStates;
     
+    [SerializeField] private BoolEventAsset _entangleModeEvent;
+    
     [Tooltip("Percentage chance of spawning a superposition tile.")]
     [SerializeField] private float _superpositionChance;
 
@@ -48,6 +51,7 @@ public class TileBoard : MonoBehaviour
     private int? cachedThreshold = null;
 
     private bool _superposition = false;
+    private bool _entangleMode = false;
 
     // Reference to the tunneling popup GameObject.
     private GameObject tunnelingPopup;
@@ -73,6 +77,8 @@ public class TileBoard : MonoBehaviour
         tunnel_merge = 0;
         // Get the PopUpSystem component from the PopUpManager GameObject.
         popUpSystem = FindAnyObjectByType<PopUpSystem>().GetComponent<PopUpSystem>();
+        
+        _entangleModeEvent.Invoke(false);
     
         // Find the Canvas GameObject in the scene.
         _canvas = FindAnyObjectByType<Canvas>().gameObject;
@@ -428,5 +434,11 @@ public class TileBoard : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void ToggleEntangleMode()
+    {
+        _entangleMode = !_entangleMode;
+        _entangleModeEvent.Invoke(_entangleMode);
     }
 }

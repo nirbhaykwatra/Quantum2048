@@ -34,6 +34,9 @@ public class Tile : MonoBehaviour
     public Image background;
     // Text component for displaying numbers.
     private TextMeshProUGUI text;
+    public bool entangleMode { get; set; }
+
+    private Button _tileButton;
 
     // Called when the script instance is being loaded.
     // Initializes the background and text components by finding them within the Tile's GameObject.
@@ -42,6 +45,7 @@ public class Tile : MonoBehaviour
         background = GetComponent<Image>();                       // Get the Image component attached to the tile.
         text = GetComponentInChildren<TextMeshProUGUI>();           // Find the TextMeshProUGUI component within child objects.
         _tileStates = FindAnyObjectByType<TileBoard>().tileStates;
+        _tileButton = GetComponent<Button>();
     }
 
     private void Update()
@@ -54,6 +58,8 @@ public class Tile : MonoBehaviour
         {
             background.color = state.backgroundColor;
         }
+        
+        _tileButton.interactable = entangleMode;
     }
 
     // Sets the state of the tile, updating its appearance based on the given TileState.
