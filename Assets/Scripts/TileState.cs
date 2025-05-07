@@ -13,6 +13,7 @@ public class TileState : ScriptableObject
     public int number;
     // The background color to use for tiles in this state.
     public Color backgroundColor;
+    public Color superpositionColor;
     // The text color to use for numbers in this state.
     public Color textColor;
 }

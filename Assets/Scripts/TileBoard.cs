@@ -44,6 +44,7 @@ public class TileBoard : MonoBehaviour
     private TileGrid grid;
     // List of tiles currently present on the board.
     private List<Tile> tiles;
+    private List<Tile> _entangledTiles;
     // Flag indicating if the board is waiting for tile movements/merges to finish.
     private bool waiting;
     // Counter for the number of tunneling merges performed.
@@ -75,6 +76,7 @@ public class TileBoard : MonoBehaviour
         grid = GetComponentInChildren<TileGrid>();
         // Initialize the list of tiles with a capacity of 16.
         tiles = new List<Tile>(16);
+        _entangledTiles = new List<Tile>();
         // Initialize the tunneling merge counter.
         tunnel_merge = 0;
         // Get the PopUpSystem component from the PopUpManager GameObject.
@@ -136,7 +138,6 @@ public class TileBoard : MonoBehaviour
     // Creates a new tile on the board.
     public void CreateTile()
     {
-        
         // Instantiate a new tile from the tile prefab as a child of the grid.
         Tile tile = Instantiate(tilePrefab, grid.transform);
         // Set its initial state.
@@ -145,8 +146,6 @@ public class TileBoard : MonoBehaviour
         tile.Spawn(grid.GetRandomEmptyCell());
         // Add the tile to the list.
         tiles.Add(tile);
-        
-        Debug.Log($"Created a tile with state {tile.state.number}.");
     }
 
     // Called once per frame to handle player input and update progress values.
@@ -292,7 +291,7 @@ public class TileBoard : MonoBehaviour
             }
 
             selectedThreshold = cachedThreshold.Value;
-            Debug.Log("Selected threshold: " + selectedThreshold);
+            // Debug.Log("Selected threshold: " + selectedThreshold);
         }
 
         return a.state == b.state &&
@@ -307,15 +306,18 @@ public class TileBoard : MonoBehaviour
     {
         a.Superposition = false;
         tiles.Remove(a);         // Remove tile 'a' from the board.
+        if (_entangledTiles.Contains(a)) _entangledTiles.Remove(a);
+        a._entangledTile = null;
         a.Merge(b.cell, false);  // Merge tile 'a' into tile 'b' without tunneling.
         
         // Determine the new state for tile 'b'.
         int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
         TileState newState = tileStates[index];
-
+        
+        if (_entangledTiles.Contains(b)) _entangledTiles.Remove(b);
+        b._entangledTile = null;
         b.SetState(newState);                               // Update tile 'b' with the new state.
         GameManager.Instance.IncreaseScore(newState.number);  // Increase the game score.
-        Debug.Log($"Tile state {a.state.number} changed to {b.state.number}.\nTile b state: {b.state.number}");
     }
 
     // Performs a tunneling merge between tiles.
@@ -343,6 +345,8 @@ public class TileBoard : MonoBehaviour
         }
         
         tiles.Remove(a);           // Remove the merged tile.
+        if (_entangledTiles.Contains(a)) _entangledTiles.Remove(a);
+        a._entangledTile = null;
         a.Merge(b.cell, true);     // Merge tile 'a' into tile 'b' with tunneling.
 
         // Determine the new state for tile 'b'.
@@ -446,6 +450,46 @@ public class TileBoard : MonoBehaviour
     public void ToggleEntangleMode()
     {
         _entangleMode = !_entangleMode;
+        foreach (Tile entangledTile in _entangledTiles)
+        {
+            entangledTile._entangledTile = null;
+            entangledTile.background.color = entangledTile.state.backgroundColor;
+            entangledTile._entangledTile = null;
+        }
+        _entangledTiles.Clear();
         _entangleModeEvent.Invoke(_entangleMode);
+    }
+
+    public void AddEntangledTile(Tile tile)
+    {
+        if (_entangledTiles.Contains(tile) || _entangledTiles.Count >= 2) return;
+        Debug.Log($"Added number {tile.state.number} tile with ID {tile.TileID}!");
+        _entangledTiles.Add(tile);
+        tile.background.color = Color.red;
+
+        Debug.Log($"Entangled Tiles List:");
+        foreach (Tile entangledTile in _entangledTiles)
+        {
+            Debug.Log($"Tile {entangledTile.TileID}");
+        }
+
+        if (_entangledTiles.IndexOf(tile) == 1)
+        {
+            _entangledTiles[0]._entangledTile = tile;
+            tile.SetState(_entangledTiles[0].state);
+            _entangledTiles[0].background.color = tile.state.backgroundColor;
+            Debug.Log($"Tile ID {_entangledTiles[0].TileID} entangled with tile ID {tile.TileID}");
+            _entangleMode = false;
+            _entangleModeEvent.Invoke(_entangleMode);
+        }
+    }
+
+    public void RemoveEntangledTile(Tile tile)
+    {
+        if (!_entangledTiles.Contains(tile)) return;
+        Debug.Log($"Removed number {tile.state.number} tile!");
+        _entangledTiles.Remove(tile);
+        tile.background.color = tile.state.backgroundColor;
+        tile._entangledTile = null;
     }
 }

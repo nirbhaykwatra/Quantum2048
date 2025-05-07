@@ -1,4 +1,5 @@
-using System.Collections;   // Enables use of IEnumerator for coroutines
+using System.Collections;
+using GameEvents; // Enables use of IEnumerator for coroutines
 using TMPro;                // For text rendering with TextMeshPro
 using UnityEngine;          // Main Unity namespace
 using UnityEngine.UI;       // For UI components like Image
@@ -20,46 +21,42 @@ public class Tile : MonoBehaviour
     // Indicates whether the tile is locked and cannot be moved.
     public bool locked { get; set; }
     
-    [TitleGroup("Properties")]
-    [ShowInInspector] public bool Superposition { get; set; }
-    
-    [TitleGroup("Properties")]
-    [ShowInInspector] public bool Entangled { get; set; }
-
-    private Tile _entangledTile;
+    [HideInInspector] public Tile _entangledTile;
     private TileState[] _tileStates;
 
     // Private fields for UI elements of the tile.
     // The background image of the tile.
-    public Image background;
+    [HideInInspector] public Image background;
     // Text component for displaying numbers.
     private TextMeshProUGUI text;
     public bool entangleMode { get; set; }
-
-    private Button _tileButton;
-
+    
+    [TitleGroup("Properties")]
+    [ShowInInspector][ReadOnly] public int TileID { get; private set; }
+    
+    [TitleGroup("Properties")]
+    [ShowInInspector][ReadOnly] public bool Superposition { get; set; }
+    
+    [TitleGroup("Properties")]
+    [ShowInInspector][ReadOnly] public bool Entangled { get; set; }
+    
+    [TitleGroup("Events")]
+    [ShowInInspector] public TileEventAsset entangleEvent;
+    [TitleGroup("Events")]
+    [ShowInInspector] public TileEventAsset disentangleEvent;
     // Called when the script instance is being loaded.
     // Initializes the background and text components by finding them within the Tile's GameObject.
     private void Awake()
     {
+        TileID = Random.Range(0, 9999);
         background = GetComponent<Image>();                       // Get the Image component attached to the tile.
         text = GetComponentInChildren<TextMeshProUGUI>();           // Find the TextMeshProUGUI component within child objects.
         _tileStates = FindAnyObjectByType<TileBoard>().tileStates;
-        _tileButton = GetComponent<Button>();
     }
 
     private void Update()
     {
-        if (Superposition)
-        {
-            background.color = Color.cyan;
-        }
-        else
-        {
-            background.color = state.backgroundColor;
-        }
         
-        _tileButton.interactable = entangleMode;
     }
 
     // Sets the state of the tile, updating its appearance based on the given TileState.
@@ -67,6 +64,7 @@ public class Tile : MonoBehaviour
     {
         this.state = state;                        // Set the internal state.
         background.color = state.backgroundColor;  // Apply the background color from the TileState.
+        //if (Superposition) background.color = state.superpositionColor;
         text.color = state.textColor;              // Apply the text color from the TileState.
         text.text = state.number.ToString();       // Update the displayed number from the TileState.
     }
@@ -100,7 +98,11 @@ public class Tile : MonoBehaviour
     // Updates cell references and triggers the animation coroutine.
     public void MoveTo(TileCell cell)
     {
-        if (Superposition)
+        if (_entangledTile)
+        {
+            SetState(_entangledTile.state);
+        }
+        if (Superposition && !_entangledTile)
         {
             SetState(_tileStates[Random.Range(0, 4)]);
         }
@@ -122,6 +124,7 @@ public class Tile : MonoBehaviour
     // Takes in a bool to detect if tunneling has occurred.
     public void Merge(TileCell cell, bool tunneling)
     {
+        _entangledTile = null;
         Superposition = false;
         if (this.cell != null)
         {
@@ -173,9 +176,11 @@ public class Tile : MonoBehaviour
 
     public void EntangleButton()
     {
+        if (!entangleMode) return;
+        
         if (!Entangled)
         {
-            Entangle(this);
+            Entangle();
         }
         else
         {
@@ -183,16 +188,17 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void Entangle(Tile tile)
+    private void Entangle()
     {
-        _entangledTile = tile;
         Entangled = true;
+        entangleEvent.Invoke(this);
     }
 
-    public void Disentangle()
+    private void Disentangle()
     {
         _entangledTile = null;
         Entangled = false;
+        disentangleEvent.Invoke(this);
     }
 
     // NOTE: Consider creating a separate function for tunneling animations in the future.
