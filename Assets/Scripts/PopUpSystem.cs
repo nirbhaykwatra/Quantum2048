@@ -54,7 +54,7 @@ public class PopUpSystem : MonoBehaviour
         // If the tunneling popup is active, adjust UI accordingly.
         if (tunnelingPopup.activeSelf == true)
         {
-            Debug.Log("popup");
+            //Debug.Log("popup");
 
             // Uncomment the following line if using timescale pausing:
             // Time.timeScale = 0;
@@ -62,7 +62,7 @@ public class PopUpSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("no popup");
+            //Debug.Log("no popup");
            
             // Uncomment the following line if using timescale pausing:
             // Time.timeScale = 1;
