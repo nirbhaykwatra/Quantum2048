@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GameEvents; // Enables use of IEnumerator for coroutines
 using TMPro;                // For text rendering with TextMeshPro
 using UnityEngine;          // Main Unity namespace
@@ -27,6 +28,8 @@ public class Tile : MonoBehaviour
     // Private fields for UI elements of the tile.
     // The background image of the tile.
     [HideInInspector] public Image background;
+    [HideInInspector] public Image superpositionOverlay;
+    [HideInInspector] public Image entanglementOverlay;
     // Text component for displaying numbers.
     private TextMeshProUGUI text;
     public bool entangleMode { get; set; }
@@ -50,13 +53,26 @@ public class Tile : MonoBehaviour
     {
         TileID = Random.Range(0, 9999);
         background = GetComponent<Image>();                       // Get the Image component attached to the tile.
+        foreach (Image image in GetComponentsInChildren<Image>())
+        {
+            if (image.gameObject.name == "Superposition")
+            {
+                superpositionOverlay = image;
+                superpositionOverlay.enabled = false;
+            }
+            else if (image.gameObject.name == "Entangled")
+            {
+                entanglementOverlay = image;
+                entanglementOverlay.enabled = false;
+            }
+        }
         text = GetComponentInChildren<TextMeshProUGUI>();           // Find the TextMeshProUGUI component within child objects.
         _tileStates = FindAnyObjectByType<TileBoard>().tileStates;
     }
 
     private void Update()
     {
-        
+        superpositionOverlay.enabled = Superposition;
     }
 
     // Sets the state of the tile, updating its appearance based on the given TileState.
@@ -191,6 +207,7 @@ public class Tile : MonoBehaviour
     private void Entangle()
     {
         Entangled = true;
+        entanglementOverlay.enabled = true;
         entangleEvent.Invoke(this);
     }
 
@@ -198,6 +215,7 @@ public class Tile : MonoBehaviour
     {
         _entangledTile = null;
         Entangled = false;
+        entanglementOverlay.enabled = false;
         disentangleEvent.Invoke(this);
     }
 
