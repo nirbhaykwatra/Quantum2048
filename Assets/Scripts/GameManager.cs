@@ -5,6 +5,13 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Sirenix.OdinInspector;
 
+public enum GameModeEnum
+{
+    NEW_GAME,
+    TUNNELING,
+    SUPERPOSITION,
+    ENTANGLEMENT
+}
 /*
  * GameManager Class
  * -----------------
@@ -31,6 +38,8 @@ public class GameManager : MonoBehaviour
     // Reference to the TextMeshProUGUI component that displays the highest score.
     [SerializeField] private FloatEventAsset _highScoreUpdateEvent;
     
+    [SerializeField] private GameModeObject _gameModeObject;
+    
     // Read-only property to retrieve the current game score.
     public int Score { get; private set; }
     // Reference to the TileBoard, which handles tile placement and merging.
@@ -53,8 +62,24 @@ public class GameManager : MonoBehaviour
     // Unity's Start method, called before the first frame update. Automatically starts a new game.
     private void Start()
     {
-        NewGame();
+        switch (_gameModeObject.GameMode)
+        {
+            case GameModeEnum.NEW_GAME:
+                NewGame();
+                break;
+            case GameModeEnum.TUNNELING:
+                TutorialTunneling();
+                break;
+            case GameModeEnum.SUPERPOSITION:
+                TutorialSuperposition();
+                break;
+            case GameModeEnum.ENTANGLEMENT:
+                TutorialEntanglement();
+                break;
+        }
     }
+    
+    #region New Game
 
     // Initializes a new game session. Resets score, updates display, clears the board, and creates initial tiles.
     public void NewGame()
@@ -134,4 +159,33 @@ public class GameManager : MonoBehaviour
     {
         return PlayerPrefs.GetInt("hiscore", 0);
     }
+    
+    #endregion
+    
+    #region Tunneling Tutorial
+
+    private void TutorialTunneling()
+    {
+        
+    }
+    
+    #endregion
+    
+    #region Superposition Tutorial
+
+    private void TutorialSuperposition()
+    {
+        
+    }
+    
+    #endregion
+    
+    #region Entanglement Tutorial
+
+    private void TutorialEntanglement()
+    {
+        
+    }
+    
+    #endregion
 }

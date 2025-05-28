@@ -148,6 +148,15 @@ public class TileBoard : MonoBehaviour
         tiles.Add(tile);
     }
 
+    public void CreateTile(TileState state, TileCell cell, bool superposition = false)
+    {
+        Tile tile = Instantiate(tilePrefab, grid.transform);
+        tile.SetState(state);
+        tile.Superposition = superposition;
+        tile.Spawn(cell);
+        tiles.Add(tile);
+    }
+
     // Called once per frame to handle player input and update progress values.
     private void Update()
     {
