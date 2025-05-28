@@ -224,6 +224,25 @@ public class GameManager : MonoBehaviour
         _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 3));
         _board.enabled = true;
     }
-    
+
+    public void HandleReset()
+    {
+        switch (_gameModeObject.GameMode)
+        {
+            case GameModeEnum.NEW_GAME:
+                return;
+                break;
+            case GameModeEnum.TUNNELING:
+                TutorialTunneling();
+                break;
+            case GameModeEnum.SUPERPOSITION:
+                TutorialSuperposition();
+                break;
+            case GameModeEnum.ENTANGLEMENT:
+                TutorialEntanglement();
+                break;
+        }
+    }
+
     #endregion
 }
