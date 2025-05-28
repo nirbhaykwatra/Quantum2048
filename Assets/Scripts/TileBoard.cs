@@ -160,20 +160,6 @@ public class TileBoard : MonoBehaviour
     // Called once per frame to handle player input and update progress values.
     private void Update()
     {
-        // Update radial progress values based on the tunneling merge counter.
-        if (tunnel_merge == 1)
-        {
-            radialProgress.currentValue = 5;
-        }
-        else if (tunnel_merge >= 2 && tunnel_merge <= 6)
-        {
-            radialProgress.currentValue = (tunnel_merge - 1) * 20;
-        }
-        else if (tunnel_merge >= 7 && tunnel_merge <= 12)
-        {
-            radialProgress2.currentValue2 = (tunnel_merge - 6) * 20;
-        }
-
         // Process movement input only if not waiting for ongoing changes.
         if (!waiting)
         {
@@ -335,23 +321,6 @@ public class TileBoard : MonoBehaviour
     {
         a.Superposition = false;
         tunnel_merge += 1;
-        if (tunnel_merge == 1 && tunnelingPopup != null && GlobalData.level == "tunnelling1")
-        {
-            // Activate the tunneling popup and play the notification sound for the first tunneling merge.
-            popUpSystem.Tunneling();
-
-            src.clip = notification_sound_1;
-            src.Play();
-
-            if (tunnelingEffect != null)
-            {
-                tunnelingEffect.Play();
-            }
-            else
-            {
-                Debug.LogWarning("Tunneling Particle Effect not assigned in the Inspector!");
-            }
-        }
         
         tiles.Remove(a);           // Remove the merged tile.
         if (_entangledTiles.Contains(a)) _entangledTiles.Remove(a);

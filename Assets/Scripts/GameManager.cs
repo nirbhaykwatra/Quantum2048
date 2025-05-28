@@ -66,15 +66,19 @@ public class GameManager : MonoBehaviour
         {
             case GameModeEnum.NEW_GAME:
                 NewGame();
+                Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.TUNNELING:
                 TutorialTunneling();
+                Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.SUPERPOSITION:
                 TutorialSuperposition();
+                Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.ENTANGLEMENT:
                 TutorialEntanglement();
+                Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
         }
     }
