@@ -40,6 +40,12 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private GameModeObject _gameModeObject;
     
+    [FoldoutGroup("Tutorial")]
+    [SerializeField] private TextMeshProUGUI _tutorialText;
+    
+    [FoldoutGroup("Tutorial")]
+    [SerializeField] private GameObject _tilePrefab;
+    
     // Read-only property to retrieve the current game score.
     public int Score { get; private set; }
     // Reference to the TileBoard, which handles tile placement and merging.
@@ -170,6 +176,18 @@ public class GameManager : MonoBehaviour
 
     private void TutorialTunneling()
     {
+        _board.SuperpositionEnabled = false;
+        _board.EntanglementEnabled = false;
+        _board.CreateNewTilesOnMove = false;
+        _gameOver.alpha = 0f;
+        _gameOver.interactable = false;
+        _board.ClearBoard();
+        
+        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2));
+        _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(2, 2));
+        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 2));
+        _board.enabled = true;
+        
         
     }
     
@@ -179,7 +197,15 @@ public class GameManager : MonoBehaviour
 
     private void TutorialSuperposition()
     {
-        
+        _board.TunnelingEnabled = false;
+        _board.EntanglementEnabled = false;
+        _board.CreateNewTilesOnMove = false;
+        _gameOver.alpha = 0f;
+        _gameOver.interactable = false;
+        _board.ClearBoard();
+
+        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), true);
+        _board.enabled = true;
     }
     
     #endregion
@@ -188,7 +214,15 @@ public class GameManager : MonoBehaviour
 
     private void TutorialEntanglement()
     {
-        
+        _board.TunnelingEnabled = false;
+        _board.SuperpositionEnabled = true;
+        _board.CreateNewTilesOnMove = false;
+        _gameOver.alpha = 0f;
+        _gameOver.interactable = false;
+        _board.ClearBoard();
+        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0));
+        _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(4, 4));
+        _board.enabled = true;
     }
     
     #endregion

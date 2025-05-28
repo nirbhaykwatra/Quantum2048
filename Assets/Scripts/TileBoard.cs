@@ -41,7 +41,7 @@ public class TileBoard : MonoBehaviour
 
     private GameObject _canvas;
     // Reference to the grid component that manages cell layout.
-    private TileGrid grid;
+    public TileGrid grid;
     // List of tiles currently present on the board.
     private List<Tile> tiles;
     private List<Tile> _entangledTiles;
@@ -56,18 +56,11 @@ public class TileBoard : MonoBehaviour
     private bool _superposition = false;
     private bool _entangleMode = false;
 
-    // Reference to the tunneling popup GameObject.
-    private GameObject tunnelingPopup;
-    // Reference to the info button GameObject.
-    private GameObject infoButton;
-    // Reference to the PopUpSystem component for handling popups.
-    PopUpSystem popUpSystem;
-    // References to radial progress components used for tracking tunneling progress.
-    RadialProgress radialProgress;
-    RadialProgress radialProgress2;
-    // GameObjects for competency counters related to tunneling.
-    [SerializeField] GameObject tunnellingCompetencyCounter;
-    [SerializeField] GameObject tunnellingCompetencyCounter2;
+    public bool CreateNewTilesOnMove { get; set; } = true;
+
+    public bool TunnelingEnabled { get; set; } = true;
+    public bool SuperpositionEnabled { get; set; } = true;
+    public bool EntanglementEnabled { get; set; } = true;
 
     // Called when the script instance is being loaded.
     private void Awake()
@@ -79,40 +72,10 @@ public class TileBoard : MonoBehaviour
         _entangledTiles = new List<Tile>();
         // Initialize the tunneling merge counter.
         tunnel_merge = 0;
-        // Get the PopUpSystem component from the PopUpManager GameObject.
-        popUpSystem = FindAnyObjectByType<PopUpSystem>().GetComponent<PopUpSystem>();
-        
         _entangleModeEvent.Invoke(false);
     
         // Find the Canvas GameObject in the scene.
         _canvas = FindAnyObjectByType<Canvas>().gameObject;
-        
-        if (_canvas != null)
-        {
-            // Find the "Tunnelling1" popup under the Canvas.
-            tunnelingPopup = _canvas.transform.Find("Tunnelling1")?.gameObject;
-            // Find the "Info Button" under the Canvas.
-            infoButton = _canvas.transform.Find("Info Button")?.gameObject;
-
-            // Get the RadialProgress components from the competency counter GameObjects.
-            radialProgress = tunnellingCompetencyCounter.GetComponent<RadialProgress>();
-            radialProgress2 = tunnellingCompetencyCounter2.GetComponent<RadialProgress>();
-            
-            if (tunnelingPopup != null && infoButton != null)
-            {
-                // Ensure the popup and info button start inactive.
-                tunnelingPopup.SetActive(false);
-                infoButton.SetActive(false);
-            }
-            else
-            {
-                Debug.LogWarning("Either Tunnelling1, Info Button, or Background Music GameObjects were not found under Canvas!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Canvas GameObject not found in the scene!");
-        }
     }
 
     // Clears the board by unlinking cells and destroying all existing tiles.
@@ -141,7 +104,10 @@ public class TileBoard : MonoBehaviour
         // Instantiate a new tile from the tile prefab as a child of the grid.
         Tile tile = Instantiate(tilePrefab, grid.transform);
         // Set its initial state.
-        tile.Superposition = Random.Range(0f, 100f) <= _superpositionChance;
+        if (SuperpositionEnabled)
+        {
+            tile.Superposition = Random.Range(0f, 100f) <= _superpositionChance;
+        }
         // Place the tile in a random empty cell.
         tile.Spawn(grid.GetRandomEmptyCell());
         // Add the tile to the list.
@@ -151,9 +117,9 @@ public class TileBoard : MonoBehaviour
     public void CreateTile(TileState state, TileCell cell, bool superposition = false)
     {
         Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(state);
         tile.Superposition = superposition;
         tile.Spawn(cell);
+        tile.SetState(state);
         tiles.Add(tile);
     }
 
@@ -233,24 +199,28 @@ public class TileBoard : MonoBehaviour
                     return true;
                 }
 
-                // Check for tunneling possibility.
-                TileCell nextAdjacent = grid.GetAdjacentCell(adjacent, direction);
-                if (GlobalData.level == "tunnelling1")
+                if (TunnelingEnabled)
                 {
-                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                    // Check for tunneling possibility.
+                    TileCell nextAdjacent = grid.GetAdjacentCell(adjacent, direction);
+                    if (GlobalData.level == "tunnelling1")
                     {
-                        TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
-                        return true;
+                        if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile))
+                        {
+                            TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
+                            return true;
+                        }
+                    }
+                    else if (GlobalData.level == "tunnelling2")
+                    {
+                        if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile, 2, 4, 8, 16))
+                        {
+                            TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
+                            return true;
+                        }
                     }
                 }
-                else if (GlobalData.level == "tunnelling2")
-                {
-                    if (nextAdjacent != null && nextAdjacent.Occupied && CanMerge(tile, nextAdjacent.tile, 2, 4, 8, 16))
-                    {
-                        TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
-                        return true;
-                    }
-                }
+
                 break;
             }
 
@@ -370,7 +340,7 @@ public class TileBoard : MonoBehaviour
         }
 
         // Create a new tile if the board is not full.
-        if (tiles.Count != grid.Size)
+        if (tiles.Count != grid.Size && CreateNewTilesOnMove)
         {
             CreateTile();
         }

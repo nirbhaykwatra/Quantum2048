@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /*
@@ -10,7 +11,7 @@ public class TileCell : MonoBehaviour
 {
     // Public properties representing the cell's coordinates and the tile currently occupying it.
     // Coordinates: Holds the X and Y positions of the cell within the grid.
-    public Vector2Int coordinates { get; set; }
+    [ShowInInspector] public Vector2Int coordinates { get; set; }
     // Tile: Reference to the tile currently occupying the cell.
     public Tile tile { get; set; }
 
