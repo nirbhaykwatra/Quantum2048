@@ -272,7 +272,7 @@ public class TileBoard : MonoBehaviour
         a.Superposition = false;
         tiles.Remove(a);         // Remove tile 'a' from the board.
         if (_entangledTiles.Contains(a)) _entangledTiles.Remove(a);
-        a._entangledTile = null;
+        a.Disentangle();
         a.Merge(b.cell, false);  // Merge tile 'a' into tile 'b' without tunneling.
         
         // Determine the new state for tile 'b'.
@@ -280,7 +280,7 @@ public class TileBoard : MonoBehaviour
         TileState newState = tileStates[index];
         
         if (_entangledTiles.Contains(b)) _entangledTiles.Remove(b);
-        b._entangledTile = null;
+        b.Disentangle();
         b.SetState(newState);                               // Update tile 'b' with the new state.
         GameManager.Instance.IncreaseScore(newState.number);  // Increase the game score.
     }

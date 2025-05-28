@@ -140,7 +140,7 @@ public class Tile : MonoBehaviour
     // Takes in a bool to detect if tunneling has occurred.
     public void Merge(TileCell cell, bool tunneling)
     {
-        _entangledTile = null;
+        Disentangle();
         Superposition = false;
         if (this.cell != null)
         {
@@ -204,14 +204,14 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void Entangle()
+    public void Entangle()
     {
         Entangled = true;
         entanglementOverlay.enabled = true;
         entangleEvent.Invoke(this);
     }
 
-    private void Disentangle()
+    public void Disentangle()
     {
         _entangledTile = null;
         Entangled = false;

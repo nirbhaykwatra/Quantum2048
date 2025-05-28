@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
         _gameOver.interactable = false;
         _board.ClearBoard();
         _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0));
-        _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(4, 4));
+        _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 3));
         _board.enabled = true;
     }
     
