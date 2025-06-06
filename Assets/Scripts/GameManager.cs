@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FloatEventAsset _highScoreUpdateEvent;
     
     [SerializeField] private GameModeObject _gameModeObject;
+    private TutorialManager _tutorialManager;
     
     // Read-only property to retrieve the current game score.
     public int Score { get; private set; }
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
         }
         
         _board = GetComponentInChildren<TileBoard>();
+        _tutorialManager = GetComponent<TutorialManager>();
     }
 
     // Unity's Start method, called before the first frame update. Automatically starts a new game.
@@ -69,15 +71,15 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.TUNNELING:
-                TutorialTunneling();
+                _tutorialManager.TutorialTunneling();
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.SUPERPOSITION:
-                TutorialSuperposition();
+                _tutorialManager.TutorialSuperposition();
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.ENTANGLEMENT:
-                TutorialEntanglement();
+                _tutorialManager.TutorialEntanglement();
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
         }
@@ -164,78 +166,5 @@ public class GameManager : MonoBehaviour
         return PlayerPrefs.GetInt("hiscore", 0);
     }
     
-    #endregion
-    
-    #region Tunneling Tutorial
-
-    private void TutorialTunneling()
-    {
-        _board.SuperpositionEnabled = false;
-        _board.EntanglementEnabled = false;
-        _board.CreateNewTilesOnMove = false;
-        _gameOver.alpha = 0f;
-        _gameOver.interactable = false;
-        _board.ClearBoard();
-        
-        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2));
-        _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(2, 2));
-        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 2));
-        _board.enabled = true;
-        
-        
-    }
-    
-    #endregion
-    
-    #region Superposition Tutorial
-
-    private void TutorialSuperposition()
-    {
-        _board.TunnelingEnabled = false;
-        _board.EntanglementEnabled = false;
-        _board.CreateNewTilesOnMove = false;
-        _gameOver.alpha = 0f;
-        _gameOver.interactable = false;
-        _board.ClearBoard();
-
-        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), true);
-        _board.enabled = true;
-    }
-    
-    #endregion
-    
-    #region Entanglement Tutorial
-
-    private void TutorialEntanglement()
-    {
-        _board.TunnelingEnabled = false;
-        _board.SuperpositionEnabled = true;
-        _board.CreateNewTilesOnMove = false;
-        _gameOver.alpha = 0f;
-        _gameOver.interactable = false;
-        _board.ClearBoard();
-        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0));
-        _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 3));
-        _board.enabled = true;
-    }
-
-    public void HandleReset()
-    {
-        switch (_gameModeObject.GameMode)
-        {
-            case GameModeEnum.NEW_GAME:
-                break;
-            case GameModeEnum.TUNNELING:
-                TutorialTunneling();
-                break;
-            case GameModeEnum.SUPERPOSITION:
-                TutorialSuperposition();
-                break;
-            case GameModeEnum.ENTANGLEMENT:
-                TutorialEntanglement();
-                break;
-        }
-    }
-
     #endregion
 }
