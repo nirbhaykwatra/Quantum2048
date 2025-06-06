@@ -46,7 +46,9 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles;
     private List<Tile> _entangledTiles;
     // Flag indicating if the board is waiting for tile movements/merges to finish.
-    private bool waiting;
+
+    public bool Waiting { get; set; }
+
     // Counter for the number of tunneling merges performed.
     private int tunnel_merge;
     // Cached threshold value used for merge comparisons.
@@ -127,7 +129,7 @@ public class TileBoard : MonoBehaviour
     private void Update()
     {
         // Process movement input only if not waiting for ongoing changes.
-        if (!waiting)
+        /*if (!Waiting)
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -145,7 +147,7 @@ public class TileBoard : MonoBehaviour
             {
                 Move(Vector2Int.right, grid.Width - 2, -1, 0, 1);
             }
-        }
+        }*/
     }
 
     // Moves tiles across the board in the specified direction.
@@ -155,7 +157,7 @@ public class TileBoard : MonoBehaviour
     //   incrementX   - Increment value for horizontal iteration.
     //   startY       - Starting index for vertical iteration.
     //   incrementY   - Increment value for vertical iteration.
-    private void Move(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
+    public void Move(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
     {
         bool changed = false;
 
@@ -327,11 +329,11 @@ public class TileBoard : MonoBehaviour
     // creating a new tile, and checking for game over conditions.
     private IEnumerator WaitForChangesCoroutine()
     {
-        waiting = true;
+        Waiting = true;
 
         yield return new WaitForSeconds(0.1f);
 
-        waiting = false;
+        Waiting = false;
 
         // Unlock all tiles.
         foreach (var tile in tiles)

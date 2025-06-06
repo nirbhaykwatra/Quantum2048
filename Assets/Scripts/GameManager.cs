@@ -40,12 +40,6 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private GameModeObject _gameModeObject;
     
-    [FoldoutGroup("Tutorial")]
-    [SerializeField] private TextMeshProUGUI _tutorialText;
-    
-    [FoldoutGroup("Tutorial")]
-    [SerializeField] private GameObject _tilePrefab;
-    
     // Read-only property to retrieve the current game score.
     public int Score { get; private set; }
     // Reference to the TileBoard, which handles tile placement and merging.
@@ -230,7 +224,6 @@ public class GameManager : MonoBehaviour
         switch (_gameModeObject.GameMode)
         {
             case GameModeEnum.NEW_GAME:
-                return;
                 break;
             case GameModeEnum.TUNNELING:
                 TutorialTunneling();
