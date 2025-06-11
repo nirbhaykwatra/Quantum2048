@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab631180060052428d3fc63b8d15e34, type: 3}
+  m_Name: TutorialModalData
+  m_EditorClassIdentifier: 
+  TunnelingWindowTitles:
+  - Tunneling Merge
+  - Tunnelling Merge
+  - What just happened?
+  - What is Quantum Tunneling?
+  TunnelingWindowDescriptions:
+  - If 2 similar tiles are blocked by a different tile, they pass through the middle
+    tile and merge with each other.
+  - Notice how the both 2 tiles are blocked by the 8 tile.
+  - Both of the 2 tiles just tunnelled through the 8 tile!
+  - This is inspired by the quantum phenomenon (called tunnelling!) where a particle
+    passes through a barrier that it shouldn't be able to cross according to classical
+    physics.
+  - Quantum tunneling is possible because particles in quantum mechanics behave as
+    probabilistic waves, allowing them to have a finite chance of passing through
+    energy barriers, even if they lack the classical energy to overcome them.
+  SuperpositionWindowTitles:
+  - What is superposition?
+  - How does it work?
+  SuperpositionWindowDescriptions:
+  - Stuff here about superposition
+  - More stuff about superposition
+  EntanglementWindowTitles: []
+  EntanglementWindowDescriptions: []
