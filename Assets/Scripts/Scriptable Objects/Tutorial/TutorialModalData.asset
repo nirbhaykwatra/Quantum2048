@@ -17,22 +17,57 @@ MonoBehaviour:
   - Tunnelling Merge
   - What just happened?
   - What is Quantum Tunneling?
+  - What is Quantum Tunneling?
+  - Try it yourself!
+  - Good Job!
+  - Merging Thresholds
+  - Merging Thresholds
+  - Merging Thresholds
+  - Merging Thresholds
+  - Tutorial Complete!
+  - 
   TunnelingWindowDescriptions:
   - If 2 similar tiles are blocked by a different tile, they pass through the middle
     tile and merge with each other.
-  - Notice how the both 2 tiles are blocked by the 8 tile.
-  - Both of the 2 tiles just tunnelled through the 8 tile!
+  - Notice how the both "2" tiles are blocked by the "8" tile.
+  - One of the "2" tiles just tunnelled through the "8" tile!
   - This is inspired by the quantum phenomenon (called tunnelling!) where a particle
     passes through a barrier that it shouldn't be able to cross according to classical
     physics.
   - Quantum tunneling is possible because particles in quantum mechanics behave as
     probabilistic waves, allowing them to have a finite chance of passing through
     energy barriers, even if they lack the classical energy to overcome them.
+  - Perform tunnelling merges to fill up the competency counter!
+  - You've mastered the tunneling merge! Next, let's learn about merge thresholds.
+  - Sometimes, tiles will not be able to merge if their value is not high enough
+    for tunnelling to work. .\n
+  - Uh-oh! The "2" tiles are not able to tunnel through because their value is not
+    high enough.
+  - Tiles must have a minimum threshold in order to be able to tunnel through.
+  - See? The "16" tile was within the tunneling threshold!
+  - You have completed the Tunnelling tutorial!\nYou can now freely play the game
+    with tunnelling enabled.\nOnce you're comfortable using tunnelling, hit the Main
+    Menu button to return to the main menu.
+  - 
   SuperpositionWindowTitles:
   - What is superposition?
   - How does it work?
+  - 
+  - 
+  - 
+  - 
+  - 
   SuperpositionWindowDescriptions:
   - Stuff here about superposition
   - More stuff about superposition
-  EntanglementWindowTitles: []
-  EntanglementWindowDescriptions: []
+  - 
+  - 
+  - 
+  - 
+  - 
+  EntanglementWindowTitles:
+  - What is entanglement?
+  - How does it work?
+  EntanglementWindowDescriptions:
+  - Stuff about entanglement
+  - More stuff about entanglement

@@ -15,6 +15,10 @@ public class TutorialManager : MonoBehaviour
     // Reference to the CanvasGroup used to show/hide the game over screen.
     [SerializeField] private CanvasGroup _gameOver;
     
+    [FoldoutGroup("UI Callbacks", expanded: true)]
+    // Reference to the CanvasGroup used to show/hide the game over screen.
+    [SerializeField] private Button _entangleButton;
+    
     [FoldoutGroup("Tutorial UI")]
     [SerializeField] private GameObject _tutorialPanel;
     
@@ -23,6 +27,9 @@ public class TutorialManager : MonoBehaviour
     
     [FoldoutGroup("Tutorial UI")]
     [SerializeField] private TutorialSelectorUI _tutorialSelector;
+    
+    [FoldoutGroup("Tutorial UI")]
+    [SerializeField] private CompetencyCounter _competencyCounter;
     
     [FoldoutGroup("Tutorial Data")]
     [SerializeField] private TutorialData _tutorialData;
@@ -64,6 +71,7 @@ public class TutorialManager : MonoBehaviour
         _tutorialData.ResetTunnelingStage();
         _gameModeObject.ResetTunnelingStep();
         _tutorialPanel.SetActive(true);
+        _entangleButton.gameObject.SetActive(false);
         _playerInput.enabled = false;
         ChangeModalContent();
         ChangeSelector();
@@ -261,6 +269,48 @@ public class TutorialManager : MonoBehaviour
         {
             case 2: 
                 _board.Move(Vector2Int.left, 1, 1, 0, 1);
+                break;
+            
+            case 6:
+                _playerInput.enabled = true;
+                _tutorialModal.gameObject.SetActive(false);
+                _board.CreateNewTilesOnMove = true;
+                _competencyCounter.gameObject.SetActive(true);
+                break;
+            
+            case 7:
+                _playerInput.enabled = false;
+                _tutorialModal.gameObject.SetActive(true);
+                _board.CreateNewTilesOnMove = false;
+                _competencyCounter.gameObject.SetActive(false);
+                GlobalData.level = "tunnelling2";
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2));
+                _board.CreateTile(_board.tileStates[4], _board.grid.GetCell(2, 2));
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 2));
+                break;
+            case 8:
+                _board.Move(Vector2Int.left, 1, 1, 0, 1);
+                break;
+            case 9:
+                GlobalData.level = "tunnelling2";
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(1, 2));
+                _board.CreateTile(_board.tileStates[4], _board.grid.GetCell(2, 2));
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(3, 2));
+                break;
+            case 10:
+                _board.Move(Vector2Int.left, 1, 1, 0, 1);
+                break;
+            case 11:
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(2, 2));
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 2));
+                break;
+            case 12:
+                _tutorialModal.gameObject.SetActive(false);
+                _playerInput.enabled = true;
+                _board.CreateNewTilesOnMove = true;
                 break;
             
             // At the stage when the player is told to try it themselves, instantiate the competency counter

@@ -54,6 +54,7 @@ public class TileBoard : MonoBehaviour
     // Cached threshold value used for merge comparisons.
     private int? cachedThreshold = null;
     [SerializeField] private Image _background;
+    [SerializeField] private StringEventAsset _specialMoveEvent;
 
     private bool _superposition = false;
     private bool _entangleMode = false;
@@ -109,6 +110,7 @@ public class TileBoard : MonoBehaviour
         if (SuperpositionEnabled)
         {
             tile.Superposition = Random.Range(0f, 100f) <= _superpositionChance;
+            _specialMoveEvent.Invoke("Superposition");
         }
         // Place the tile in a random empty cell.
         tile.Spawn(grid.GetRandomEmptyCell());
@@ -212,6 +214,10 @@ public class TileBoard : MonoBehaviour
                             TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
                             return true;
                         }
+                        else
+                        {
+                            tile.Animator.SetTrigger("blocked");
+                        }
                     }
                     else if (GlobalData.level == "tunnelling2")
                     {
@@ -219,6 +225,10 @@ public class TileBoard : MonoBehaviour
                         {
                             TunnelingMergeTiles(tile, adjacent.tile, nextAdjacent.tile);
                             return true;
+                        }
+                        else
+                        {
+                            tile.Animator.SetTrigger("blocked");
                         }
                     }
                 }
@@ -293,6 +303,7 @@ public class TileBoard : MonoBehaviour
     {
         a.Superposition = false;
         tunnel_merge += 1;
+        blocker.Animator.SetTrigger("tunnel");
         
         tiles.Remove(a);           // Remove the merged tile.
         if (_entangledTiles.Contains(a)) _entangledTiles.Remove(a);
@@ -307,6 +318,8 @@ public class TileBoard : MonoBehaviour
         GameManager.Instance.IncreaseScore(newState.number); // Increase the game score.
         a.Superposition = false;
         b.Superposition = false;
+        
+        _specialMoveEvent.Invoke("Tunnelling");
 
         // Optionally, handle the blocker tile here (e.g., destroy it).
         // Destroy(blocker.gameObject); // Example: destroy the blocker tile.
@@ -429,6 +442,7 @@ public class TileBoard : MonoBehaviour
             tile.SetState(_entangledTiles[0].state);
             _entangledTiles[0].background.color = tile.state.backgroundColor;
             Debug.Log($"Tile ID {_entangledTiles[0].TileID} entangled with tile ID {tile.TileID}");
+            _specialMoveEvent.Invoke("Entanglement");
             _entangleMode = false;
             _entangleModeEvent.Invoke(_entangleMode);
         }

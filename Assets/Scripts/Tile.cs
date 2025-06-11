@@ -24,6 +24,10 @@ public class Tile : MonoBehaviour
     
     [HideInInspector] public Tile _entangledTile;
     private TileState[] _tileStates;
+    
+    private Animator _animator;
+
+    public Animator Animator => _animator;
 
     // Private fields for UI elements of the tile.
     // The background image of the tile.
@@ -53,6 +57,7 @@ public class Tile : MonoBehaviour
     {
         TileID = Random.Range(0, 9999);
         background = GetComponent<Image>();                       // Get the Image component attached to the tile.
+        _animator = GetComponent<Animator>();
         foreach (Image image in GetComponentsInChildren<Image>())
         {
             if (image.gameObject.name == "Superposition")

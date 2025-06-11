@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
         _gameOver.interactable = false;
 
         // update board state
+        GlobalData.level = "tunnelling1";
         _board.ClearBoard();
         _board.CreateTile();
         _board.CreateTile();
