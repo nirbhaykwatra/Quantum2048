@@ -89,6 +89,9 @@ public class TutorialManager : MonoBehaviour
         _tutorialData.ResetSuperpositionStage();
         _gameModeObject.ResetSuperpositionStep();
         _tutorialPanel.SetActive(true);
+        _playerInput.enabled = false;
+        ChangeModalContent();
+        ChangeSelector();
         _board.TunnelingEnabled = false;
         _board.EntanglementEnabled = false;
         _board.CreateNewTilesOnMove = false;
@@ -109,6 +112,9 @@ public class TutorialManager : MonoBehaviour
         _tutorialData.ResetEntanglementStage();
         _gameModeObject.ResetEntanglementStep();
         _tutorialPanel.SetActive(true);
+        _playerInput.enabled = false;
+        ChangeModalContent();
+        ChangeSelector();
         _board.TunnelingEnabled = false;
         _board.SuperpositionEnabled = true;
         _board.CreateNewTilesOnMove = false;
