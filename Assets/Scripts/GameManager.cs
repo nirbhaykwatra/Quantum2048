@@ -71,15 +71,18 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.TUNNELING:
-                _tutorialManager.TutorialTunneling();
+                _tutorialManager.HandleResetTutorialStage();
+                _tutorialManager.HandleTunnelingTutorialStageChanged(0);
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.SUPERPOSITION:
-                _tutorialManager.TutorialSuperposition();
+                _tutorialManager.HandleResetTutorialStage();
+                _tutorialManager.HandleSuperpositionTutorialStageChanged(0);
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
             case GameModeEnum.ENTANGLEMENT:
-                _tutorialManager.TutorialEntanglement();
+                _tutorialManager.HandleResetTutorialStage();
+                _tutorialManager.HandleEntanglementTutorialStageChanged(0);
                 Debug.Log($"Game Mode is now {_gameModeObject.GameMode}");
                 break;
         }

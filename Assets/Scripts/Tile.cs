@@ -51,6 +51,8 @@ public class Tile : MonoBehaviour
     [ShowInInspector] public TileEventAsset entangleEvent;
     [TitleGroup("Events")]
     [ShowInInspector] public TileEventAsset disentangleEvent;
+
+    [ReadOnly] public Vector2Int _tileCell;
     // Called when the script instance is being loaded.
     // Initializes the background and text components by finding them within the Tile's GameObject.
     private void Awake()
@@ -113,6 +115,7 @@ public class Tile : MonoBehaviour
         {
             SetState(_tileStates[0]);
         }
+        _tileCell = new Vector2Int(this.cell.coordinates.x, this.cell.coordinates.y);
     }
 
     // Moves the tile to a new cell with a smooth animation.
@@ -134,6 +137,8 @@ public class Tile : MonoBehaviour
 
         this.cell = cell;         // Assign the new cell to the tile.
         this.cell.tile = this;    // Point the cell's tile to this tile.
+        
+        _tileCell = new Vector2Int(this.cell.coordinates.x, this.cell.coordinates.y);
 
         // Start the animation coroutine to move the tile to the new cell's position.
         StartCoroutine(Animate(cell.transform.position, false, false));
@@ -173,6 +178,7 @@ public class Tile : MonoBehaviour
         while (elapsed < duration)
         {
             transform.position = Vector3.Lerp(from, to, elapsed / duration);
+            if (Superposition) SetState(_tileStates[Random.Range(0, 4)]);
             elapsed += Time.deltaTime; // Increment elapsed time by the time since the last frame.
             yield return null;         // Wait until the next frame before continuing the loop.
         }

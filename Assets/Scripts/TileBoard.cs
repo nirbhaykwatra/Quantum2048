@@ -127,6 +127,27 @@ public class TileBoard : MonoBehaviour
         tiles.Add(tile);
     }
 
+    public void ClearCell(int x, int y)
+    {
+        Tile tile = grid.GetCell(x, y).tile;
+
+        if (tiles.Contains(tile))
+        {
+            tiles.Remove(tile);
+            Destroy(tile.gameObject);
+            Debug.Log("Removed tile: " + tile.TileID);
+        }
+        
+        tile.cell.tile = null;
+        
+        
+    }
+
+    public void ClearCell(Vector2Int coordinates)
+    {
+        ClearCell(coordinates.x, coordinates.y);
+    }
+
     // Called once per frame to handle player input and update progress values.
     private void Update()
     {

@@ -43,21 +43,37 @@ MonoBehaviour:
   tunnelingSelectorActive: 00010000000000000000000100
   tunnelingSelectorAnimations: []
   superpositionSelectorPositions:
+  - {x: 181, y: -448}
+  - {x: 181, y: -448}
+  - {x: 181, y: -448}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   superpositionSelectorScale:
+  - {x: 139, y: 137}
+  - {x: 139, y: 137}
+  - {x: 139, y: 137}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  superpositionSelectorActive: 000000000000000000
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  superpositionSelectorActive: 0000010000000000000000
   superpositionSelectorAnimations: []
   entanglementSelectorPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
@@ -71,5 +87,10 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  entanglementSelectorActive: 000000000000000000
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  entanglementSelectorActive: 0000000000000000000000
   entanglementSelectorAnimations: []

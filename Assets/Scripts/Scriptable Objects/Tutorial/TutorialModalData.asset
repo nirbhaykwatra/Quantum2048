@@ -50,20 +50,42 @@ MonoBehaviour:
     Menu button to return to the main menu.
   - 
   SuperpositionWindowTitles:
-  - What is superposition?
-  - How does it work?
-  - 
-  - 
-  - 
-  - 
+  - Superposition Tiles
+  - Superposition Tiles
+  - Superposition Tiles
+  - Try It Yourself!
+  - What is Quantum Superposition?
+  - What is Quantum Superposition?
+  - Superposition Tiles
+  - Superposition Tiles
+  - Superposition Tiles
+  - Tutorial Complete!
   - 
   SuperpositionWindowDescriptions:
-  - Stuff here about superposition
-  - More stuff about superposition
-  - 
-  - 
-  - 
-  - 
+  - Occasionally, you might see a tile with a green border on the board.
+  - Occasionally, you might see a tile with a green border on the board.
+  - This is a superposition tile!\n\nA superposition tile has a chance of changing
+    its value each time it moves!
+  - Move around the superposition tile to see how it works!\nClick continue once
+    you're done.
+  - 'This mechanic is inspired by the concept of "superposition" in quantum mechanics.\n\nImagine
+    flipping a coin. We know that when the coin lands, it can either be in the heads
+    state or in the tails state. But what state is it in while it''s flipping?\n\nWhile
+    flipping, we can say that the coin is in a superposition, meaning that it is
+    both heads and tails at the same time.\n\nSimilarly, a quantum system can be
+    in superposition, meaning that it can be in multiple states at once. '
+  - However, once we observe the system (when the coin lands), the superposition
+    resolves into one of the possible outcomes. This is what is happening with our
+    tile.
+  - Superposition tiles can get you out of a tough spot. In this case, there is only
+    one space left to move on the board, which puts us very close to game over.\n\nPress
+    continue to see how the superposition tile can help us.
+  - The superposition tile can be merged with the "2" tile right above it!
+  - In this case, the superposition tile helped to create more space and avoid a
+    game over!
+  - You have completed the Superposition tutorial!\nYou can now freely play the game
+    with superposition enabled.\nOnce you're comfortable using superposition, hit
+    the Main Menu button to return to the main menu.
   - 
   EntanglementWindowTitles:
   - What is entanglement?

@@ -64,6 +64,7 @@ public class TutorialManager : MonoBehaviour
         _tutorialPanel.SetActive(false);
     }
 
+    /*
     #region Tunneling Tutorial
 
     public void TutorialTunneling()
@@ -107,13 +108,14 @@ public class TutorialManager : MonoBehaviour
         _gameOver.interactable = false;
         _board.ClearBoard();
 
-        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), true);
+        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), false);
+        _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(2, 2), false);
         _board.enabled = true;
     }
     
-    #endregion
+    #endregion*/
     
-    #region Entanglement Tutorial
+    /*#region Entanglement Tutorial
 
     public void TutorialEntanglement()
     {
@@ -134,8 +136,27 @@ public class TutorialManager : MonoBehaviour
         _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 3));
         _board.enabled = true;
     }
+    #endregion*/
 
-    #endregion
+    public void HandleResetTutorialStage()
+    {
+        _tutorialPanel.SetActive(false);
+        switch (_gameModeObject.GameMode)
+        {
+            case GameModeEnum.TUNNELING:
+                _tutorialData.ResetTunnelingStage();
+                break;
+            case GameModeEnum.SUPERPOSITION:
+                _tutorialData.ResetSuperpositionStage();
+                break;
+            case GameModeEnum.ENTANGLEMENT:
+                _tutorialData.ResetEntanglementStage();
+                break;
+        }
+    }
+    
+    
+
 
     #region Modal Button Methods
     public void ChangeModalContent()
@@ -169,12 +190,12 @@ public class TutorialManager : MonoBehaviour
             case GameModeEnum.SUPERPOSITION:
                 _tutorialSelector.ChangePosition(_tutorialSelectorData.superpositionSelectorPositions[_tutorialData.superpositionStage]);
                 _tutorialSelector.ChangeScale(_tutorialSelectorData.superpositionSelectorScale[_tutorialData.superpositionStage]);
-                _tutorialSelector.SetActive(_tutorialSelectorData.tunnelingSelectorActive[_tutorialData.tunnelingStage]);
+                _tutorialSelector.SetActive(_tutorialSelectorData.superpositionSelectorActive[_tutorialData.superpositionStage]);
                 break;
             case GameModeEnum.ENTANGLEMENT:
                 _tutorialSelector.ChangePosition(_tutorialSelectorData.entanglementSelectorPositions[_tutorialData.entanglementStage]);
                 _tutorialSelector.ChangeScale(_tutorialSelectorData.entanglementSelectorScale[_tutorialData.entanglementStage]);
-                _tutorialSelector.SetActive(_tutorialSelectorData.tunnelingSelectorActive[_tutorialData.tunnelingStage]);
+                _tutorialSelector.SetActive(_tutorialSelectorData.entanglementSelectorActive[_tutorialData.entanglementStage]);
                 break;
         }
     }
@@ -226,7 +247,6 @@ public class TutorialManager : MonoBehaviour
         ChangeSelector();
         _entanglementTutorialStageChangeEvent.Invoke(_tutorialData.entanglementStage);
     }
-    #endregion
 
     public void HandleModalButtonClicked()
     {
@@ -244,7 +264,7 @@ public class TutorialManager : MonoBehaviour
         }
     }
     
-    public void HandleReset()
+    /*public void HandleReset()
     {
         _tutorialPanel.SetActive(false);
         switch (_gameModeObject.GameMode)
@@ -261,12 +281,33 @@ public class TutorialManager : MonoBehaviour
                 TutorialEntanglement();
                 break;
         }
-    }
+    }*/
+    #endregion
 
     public void HandleTunnelingTutorialStageChanged(int stage)
     {
         switch (stage)
         {
+            case 0:
+                _tutorialData.ResetTunnelingStage();
+                _gameModeObject.ResetTunnelingStep();
+                _tutorialPanel.SetActive(true);
+                _entangleButton.gameObject.SetActive(false);
+                _playerInput.enabled = false;
+                ChangeModalContent();
+                ChangeSelector();
+                _board.SuperpositionEnabled = false;
+                _board.EntanglementEnabled = false;
+                _board.CreateNewTilesOnMove = false;
+                _gameOver.alpha = 0f;
+                _gameOver.interactable = false;
+                _board.ClearBoard();
+        
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2));
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(2, 2));
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 2));
+                _board.enabled = true;
+                break;
             case 2: 
                 _board.Move(Vector2Int.left, 1, 1, 0, 1);
                 break;
@@ -322,8 +363,77 @@ public class TutorialManager : MonoBehaviour
     {
         switch (stage)
         {
-            case 2: 
+            case 0:
+                _tutorialData.ResetSuperpositionStage();
+                _gameModeObject.ResetSuperpositionStep();
+                _tutorialPanel.SetActive(true);
+                _playerInput.enabled = false;
+                ChangeModalContent();
+                ChangeSelector();
+                _board.TunnelingEnabled = false;
+                _board.EntanglementEnabled = false;
+                _board.CreateNewTilesOnMove = false;
+                _gameOver.alpha = 0f;
+                _gameOver.interactable = false;
+                _board.ClearBoard();
+
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), false);
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(2, 2), false);
+                _board.enabled = true;
+                break;
+            case 1: 
+                _board.Move(Vector2Int.left, 1, 1, 0, 1);
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 2), true);
+                break;
+            case 3:
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), true);
+                _playerInput.enabled = true;
+                break;
+            case 4:
+                _playerInput.enabled = false;
+                break;
+            case 6:
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0), false);
+                //_board.CreateTile(_board.tileStates[1], _board.grid.GetCell(0, 1), false);
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(0, 2), false);
+                _board.CreateTile(_board.tileStates[1], _board.grid.GetCell(0, 3), false);
+                
+                _board.CreateTile(_board.tileStates[1], _board.grid.GetCell(1, 0), false);
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(1, 1), true);
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 2), false);
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(1, 3), false);
+                
+                _board.CreateTile(_board.tileStates[4], _board.grid.GetCell(2, 0), false);
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(2, 1), false);
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(2, 2), false);
+                _board.CreateTile(_board.tileStates[1], _board.grid.GetCell(2, 3), false);
+                
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 0), false);
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(3, 1), false);
+                _board.CreateTile(_board.tileStates[4], _board.grid.GetCell(3, 2), false);
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(3, 3), false);
+                break;
+            case 7:
+                _board.Move(Vector2Int.left, 1, 1, 0, 1);
+                _board.ClearCell(0, 1);
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 1), true);
+                break;
+            case 8:
+                _board.SuperpositionEnabled = false;
                 _board.Move(Vector2Int.up, 0, 1, 1, 1);
+                break;
+            case 9:
+                _board.SuperpositionEnabled = true;
+                break;
+            case 10:
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(3, 3), false);
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(1, 0), false);
+                _tutorialModal.gameObject.SetActive(false);
+                _playerInput.enabled = true;
+                _board.CreateNewTilesOnMove = true;
                 break;
         }
     }
@@ -332,6 +442,24 @@ public class TutorialManager : MonoBehaviour
     {
         switch (stage)
         {
+            case 0:
+                _tutorialData.ResetEntanglementStage();
+                _gameModeObject.ResetEntanglementStep();
+                _tutorialPanel.SetActive(true);
+                _playerInput.enabled = false;
+                ChangeModalContent();
+                ChangeSelector();
+                _board.TunnelingEnabled = false;
+                _board.SuperpositionEnabled = true;
+                _board.CreateNewTilesOnMove = false;
+                _gameOver.alpha = 0f;
+                _gameOver.interactable = false;
+                _board.ClearBoard();
+        
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0));
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 3));
+                _board.enabled = true;
+                break;
             case 2: 
                 _board.Move(Vector2Int.down, 0, 1, _grid.Height - 2, -1);
                 break;
