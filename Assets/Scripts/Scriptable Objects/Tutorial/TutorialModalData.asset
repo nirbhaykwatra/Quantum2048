@@ -83,9 +83,9 @@ MonoBehaviour:
   - The superposition tile can be merged with the "2" tile right above it!
   - In this case, the superposition tile helped to create more space and avoid a
     game over!
-  - You have completed the Superposition tutorial!\nYou can now freely play the game
-    with superposition enabled.\nOnce you're comfortable using superposition, hit
-    the Main Menu button to return to the main menu.
+  - You have completed the Superposition tutorial!\n\nYou can now freely play the
+    game with superposition enabled.\nOnce you're comfortable using superposition,
+    hit the Main Menu button to return to the main menu.
   - 
   EntanglementWindowTitles:
   - What is entanglement?
