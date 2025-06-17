@@ -366,6 +366,7 @@ public class TutorialManager : MonoBehaviour
             case 0:
                 _tutorialData.ResetSuperpositionStage();
                 _gameModeObject.ResetSuperpositionStep();
+                _entangleButton.gameObject.SetActive(false);
                 _tutorialPanel.SetActive(true);
                 _playerInput.enabled = false;
                 ChangeModalContent();

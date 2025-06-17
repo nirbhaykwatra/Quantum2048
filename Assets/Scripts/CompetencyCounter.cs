@@ -46,12 +46,12 @@ public class CompetencyCounter : MonoBehaviour
         switch (moveType)
         {
             case "Tunnelling":
-                if (_counter.value < _maxValue)
+                if (_counter.value < _maxValue - 1)
                 {
                     _counter.value++;
                     _counterText.text = $"{_counter.value}/{_maxValue}";
                 }
-                else if (_counter.value >= _maxValue)
+                else if (_counter.value >= _maxValue - 1)
                 {
                     // Set tunnelling tutorial stage to 7
                     _tunnelingTutorialStageChangeEvent.Invoke(7);
