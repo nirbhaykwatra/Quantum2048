@@ -52,7 +52,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: 192.48, y: -82}
   - {x: 0, y: 0}
   superpositionSelectorScale:
   - {x: 139, y: 137}
@@ -64,7 +64,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: 149.23, y: 90.44}
   - {x: 0, y: 0}
   superpositionSelectorActive: 0000010000000000000000
   superpositionSelectorAnimations: []
@@ -76,7 +76,7 @@ MonoBehaviour:
   - {x: 319, y: -572}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: 192.48, y: -82}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
@@ -88,9 +88,9 @@ MonoBehaviour:
   - {x: 139, y: 137}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
+  - {x: 149.23, y: 90.44}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  entanglementSelectorActive: 0100000001000000000000
+  entanglementSelectorActive: 0100000001000001000000
   entanglementSelectorAnimations: []

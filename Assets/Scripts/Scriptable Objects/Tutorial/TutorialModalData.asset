@@ -93,9 +93,9 @@ MonoBehaviour:
   - What just happened?
   - What is Quantum Entanglement?
   - Entanglement Cost
-  - 
-  - 
-  - 
+  - Entanglement Cost
+  - Try It Yourself!
+  - Tutorial Complete!
   - 
   - 
   - 
@@ -114,9 +114,14 @@ MonoBehaviour:
     at opposite ends of the universe and still influence one another instantaneously.
   - Entanglement is a powerful tool and for that reason, there is a cost for using
     it.\n\nNotice that the entangle button now shows the points required to use it.
-  - 
-  - 
-  - 
+  - The entanglement cost will be deducted from your score.\n\nIf your score is lower
+    than the entanglement cost, you will not be able to use entanglement.\n\nAs you
+    keep creating higher and higher value tiles, your entanglement cost will go up
+    as well.
+  - Get a high enough score to use entanglement!
+  - You have completed the Entanglement tutorial!\n\nYou can now freely play the
+    game with entanglement enabled.\nOnce you're comfortable using entanglement,
+    hit the Main Menu button to return to the main menu.
   - 
   - 
   - 
