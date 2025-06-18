@@ -506,9 +506,11 @@ public class TutorialManager : MonoBehaviour
             case 6:
                 _playerInput.enabled = true;
                 _board.CreateNewTilesOnMove = true;
+                _tutorialModal.modalButton.enabled = false;
                 break;
             case 7:
                 _playerInput.enabled = false;
+                _tutorialModal.modalButton.enabled = true;
                 break;
             case 8:
                 _playerInput.enabled = true;
