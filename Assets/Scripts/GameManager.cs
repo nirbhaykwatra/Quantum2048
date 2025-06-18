@@ -144,6 +144,11 @@ public class GameManager : MonoBehaviour
     {
         SetScore(Score + points);
     }
+    
+    public void DecreaseScore(int points)
+    {
+        SetScore(Score - points);
+    }
 
     // Internal method to set the current score, update its display, and attempt to save the new high score.
     private void SetScore(int score)

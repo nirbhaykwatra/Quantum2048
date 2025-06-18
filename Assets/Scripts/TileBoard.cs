@@ -27,16 +27,15 @@ public class TileBoard : MonoBehaviour
     public AudioClip notification_sound_1;
     // Reference to the tunneling particle effect prefab.
     public ParticleSystem tunnelingEffect;
-
-    // Tile prefab for instantiating new tiles.
-    [SerializeField] private Tile tilePrefab;
-    // Array of tile states used to update tile appearances.
     public TileState[] tileStates;
     
+    [SerializeField] private Tile tilePrefab;
     [SerializeField] private BoolEventAsset _entangleModeEvent;
-    
     [Tooltip("Percentage chance of spawning a superposition tile.")]
     [SerializeField] private float _superpositionChance;
+    [SerializeField] private Image _background;
+    [SerializeField] private StringEventAsset _specialMoveEvent;
+    public int entanglementCost = 200;
 
 
     private GameObject _canvas;
@@ -53,8 +52,6 @@ public class TileBoard : MonoBehaviour
     private int tunnel_merge;
     // Cached threshold value used for merge comparisons.
     private int? cachedThreshold = null;
-    [SerializeField] private Image _background;
-    [SerializeField] private StringEventAsset _specialMoveEvent;
 
     private bool _superposition = false;
     private bool _entangleMode = false;
@@ -433,15 +430,19 @@ public class TileBoard : MonoBehaviour
 
     public void ToggleEntangleMode()
     {
-        _entangleMode = !_entangleMode;
-        foreach (Tile entangledTile in _entangledTiles)
+        if (GameManager.Instance.Score >= entanglementCost)
         {
-            entangledTile._entangledTile = null;
-            entangledTile.background.color = entangledTile.state.backgroundColor;
-            entangledTile._entangledTile = null;
+            GameManager.Instance.DecreaseScore(entanglementCost);
+            _entangleMode = !_entangleMode;
+            foreach (Tile entangledTile in _entangledTiles)
+            {
+                entangledTile._entangledTile = null;
+                entangledTile.background.color = entangledTile.state.backgroundColor;
+                entangledTile._entangledTile = null;
+            }
+            _entangledTiles.Clear();
+            _entangleModeEvent.Invoke(_entangleMode);
         }
-        _entangledTiles.Clear();
-        _entangleModeEvent.Invoke(_entangleMode);
     }
 
     public void AddEntangledTile(Tile tile)
