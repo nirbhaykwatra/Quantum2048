@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Internal method to set the current score, update its display, and attempt to save the new high score.
-    private void SetScore(int score)
+    public void SetScore(int score)
     {
         Score = score;
         _scoreUpdateEvent.Invoke(Score);

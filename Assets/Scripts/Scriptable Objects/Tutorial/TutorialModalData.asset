@@ -88,8 +88,36 @@ MonoBehaviour:
     hit the Main Menu button to return to the main menu.
   - 
   EntanglementWindowTitles:
-  - What is entanglement?
-  - How does it work?
+  - Entangling Tiles
+  - Try It Yourself!
+  - What just happened?
+  - What is Quantum Entanglement?
+  - Entanglement Cost
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   EntanglementWindowDescriptions:
-  - Stuff about entanglement
-  - More stuff about entanglement
+  - Look at the highlighted button! This is the Entanglement button.\n\nThe Entanglement
+    button can be used to choose 2 tiles and make them the same!
+  - Click "Entangle". You will see that the board changes.\n\nOnce the board has
+    changed, click the "8" tile to select it. You can see that the "8" tile is selected
+    when it turns red.\n\nThen, select the 2 tile.
+  - Look! The "2" tile turned into an "8" tile!
+  - This mechanic is inspired by the concept of quantum entanglement.\n\nIn a quantum
+    system, a unique phenomenon can occur where two or more particles become connected
+    (or entangled) in such a way that they instantly affect each other, regardless
+    of the physical distance between them. They can even be separated by light-years
+    at opposite ends of the universe and still influence one another instantaneously.
+  - Entanglement is a powerful tool and for that reason, there is a cost for using
+    it.\n\nNotice that the entangle button now shows the points required to use it.
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 

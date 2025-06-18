@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38f6922733b6ac84da2a5152017de5d2, type: 3}
-  m_Name: ActiveGameMode
+  m_Script: {fileID: 11500000, guid: e4b1e5deed4a6cb4ea2212e6a22c6d59, type: 3}
+  m_Name: TutorialEntangle
   m_EditorClassIdentifier: 
-  GameMode: 3
+  _log: 0
+  _currentValue: 0
+  _testValue: 0
+  _autoCleanupListeners: 1
+  OnInvoked:
+    m_PersistentCalls:
+      m_Calls: []

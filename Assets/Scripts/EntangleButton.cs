@@ -16,6 +16,7 @@ public class EntangleButton : MonoBehaviour
     
     public void HandleScoreUpdate(float score)
     {
+        if (!_board.enableEntanglementCost) return;
         _button.interactable = !(score < _board.entanglementCost);
         if (!_button.interactable)
         {

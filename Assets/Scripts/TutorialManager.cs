@@ -6,6 +6,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
@@ -263,6 +264,19 @@ public class TutorialManager : MonoBehaviour
                 break;
         }
     }
+
+    public void HandleTutorialEntangle()
+    {
+        switch (_entanglementTutorialStageChangeEvent.CurrentValue)
+        {
+            case 1:
+                IncreaseEntanglementStage();
+                break;
+            case 6:
+                IncreaseEntanglementStage();
+                break;
+        }
+    }
     
     /*public void HandleReset()
     {
@@ -448,22 +462,63 @@ public class TutorialManager : MonoBehaviour
                 _gameModeObject.ResetEntanglementStep();
                 _tutorialPanel.SetActive(true);
                 _playerInput.enabled = false;
+                _board.enableEntanglementCost = false;
                 ChangeModalContent();
                 ChangeSelector();
                 _board.TunnelingEnabled = false;
-                _board.SuperpositionEnabled = true;
+                _board.SuperpositionEnabled = false;
                 _board.CreateNewTilesOnMove = false;
                 _gameOver.alpha = 0f;
                 _gameOver.interactable = false;
+                GameManager.Instance.SetScore(1000);
                 _board.ClearBoard();
         
                 _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0));
                 _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(3, 3));
                 _board.enabled = true;
                 break;
-            case 2: 
-                _board.Move(Vector2Int.down, 0, 1, _grid.Height - 2, -1);
+            case 1:
+                _tutorialModal.modalButton.enabled = false;
                 break;
+            case 2:
+                _tutorialModal.modalButton.enabled = true;
+                break;
+            case 4: 
+                _board.enableEntanglementCost = true;
+                GameManager.Instance.SetScore(100);
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0), false);
+                _board.CreateTile(_board.tileStates[1], _board.grid.GetCell(0, 1), false);
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(0, 2), false);
+                
+                _board.CreateTile(_board.tileStates[1], _board.grid.GetCell(1, 0), false);
+                _board.CreateTile(_board.tileStates[2], _board.grid.GetCell(1, 1), false);
+
+                
+                _board.CreateTile(_board.tileStates[4], _board.grid.GetCell(2, 0), false);
+
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(2, 2), false);
+                
+                _board.CreateTile(_board.tileStates[3], _board.grid.GetCell(3, 1), false);
+                _board.CreateTile(_board.tileStates[4], _board.grid.GetCell(3, 2), false);
+
+                break;
+            case 6:
+                _playerInput.enabled = true;
+                _board.CreateNewTilesOnMove = true;
+                break;
+            case 7:
+                _playerInput.enabled = false;
+                break;
+            case 8:
+                _playerInput.enabled = true;
+                _tutorialModal.gameObject.SetActive(false);
+                GameManager.Instance.SetScore(0);
+                _board.ClearBoard();
+                _board.CreateTile(_board.tileStates[0], _board.grid.GetCell(0, 0), false);
+                _board.CreateTile(_board.tileStates[1], _board.grid.GetCell(2, 2), false);
+                break;
+            
         }
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using GameEvents;
@@ -31,11 +32,14 @@ public class TileBoard : MonoBehaviour
     
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private BoolEventAsset _entangleModeEvent;
+    [SerializeField] private BoolEventAsset _tutorialEntangleEvent;
     [Tooltip("Percentage chance of spawning a superposition tile.")]
     [SerializeField] private float _superpositionChance;
     [SerializeField] private Image _background;
     [SerializeField] private StringEventAsset _specialMoveEvent;
-    public int entanglementCost = 200;
+    [HideInInspector] public int entanglementCost;
+    public int baseEntanglementCost = 500;
+    public bool enableEntanglementCost = true;
 
 
     private GameObject _canvas;
@@ -113,6 +117,7 @@ public class TileBoard : MonoBehaviour
         tile.Spawn(grid.GetRandomEmptyCell());
         // Add the tile to the list.
         tiles.Add(tile);
+        entanglementCost = baseEntanglementCost + FindHighestValueTile().state.number * 2;
     }
 
     public void CreateTile(TileState state, TileCell cell, bool superposition = false)
@@ -122,6 +127,7 @@ public class TileBoard : MonoBehaviour
         tile.Spawn(cell);
         tile.SetState(state);
         tiles.Add(tile);
+        entanglementCost = baseEntanglementCost + FindHighestValueTile().state.number * 2;
     }
 
     public void ClearCell(int x, int y)
@@ -180,6 +186,7 @@ public class TileBoard : MonoBehaviour
     public void Move(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
     {
         bool changed = false;
+        entanglementCost = baseEntanglementCost + FindHighestValueTile().state.number * 2;
 
         // Iterate through grid cells based on the provided indices.
         for (int x = startX; x >= 0 && x < grid.Width; x += incrementX)
@@ -313,6 +320,7 @@ public class TileBoard : MonoBehaviour
         b.Disentangle();
         b.SetState(newState);                               // Update tile 'b' with the new state.
         GameManager.Instance.IncreaseScore(newState.number);  // Increase the game score.
+        entanglementCost = baseEntanglementCost + FindHighestValueTile().state.number * 2;
     }
 
     // Performs a tunneling merge between tiles.
@@ -338,6 +346,7 @@ public class TileBoard : MonoBehaviour
         b.Superposition = false;
         
         _specialMoveEvent.Invoke("Tunnelling");
+        entanglementCost = baseEntanglementCost + FindHighestValueTile().state.number * 2;
 
         // Optionally, handle the blocker tile here (e.g., destroy it).
         // Destroy(blocker.gameObject); // Example: destroy the blocker tile.
@@ -389,10 +398,8 @@ public class TileBoard : MonoBehaviour
     // Returns true if no more moves or merges are possible.
     public bool CheckForGameOver()
     {
-        if (tiles.Count != grid.Size)
-        {
-            return false;
-        }
+        if (tiles.Count != grid.Size) return false;
+        if (GameManager.Instance.Score >= entanglementCost) return false;
 
         // Check each tile to see if a merge is possible with any adjacent tile.
         foreach (var tile in tiles)
@@ -423,6 +430,27 @@ public class TileBoard : MonoBehaviour
         return true;
     }
 
+    private Tile FindHighestValueTile()
+    {
+        List<int> values = new List<int>();
+        foreach (Tile tile in tiles)
+        {
+            values.Add(tile.state.number);
+        }
+
+        int highestValue = values.Max();
+        
+        foreach (Tile tile in tiles)
+        {
+            if (tile.state.number == highestValue)
+            {
+                return tile;
+            }
+        }
+        
+        return null;
+    }
+
     public void ChangeBackgroundColor()
     {
         _background.color = _entangleMode ? new Color32(255, 255, 255, 255) : new Color32(0, 7, 111, 255);
@@ -430,19 +458,19 @@ public class TileBoard : MonoBehaviour
 
     public void ToggleEntangleMode()
     {
-        if (GameManager.Instance.Score >= entanglementCost)
+        if (GameManager.Instance.Score >= entanglementCost && enableEntanglementCost)
         {
             GameManager.Instance.DecreaseScore(entanglementCost);
-            _entangleMode = !_entangleMode;
-            foreach (Tile entangledTile in _entangledTiles)
-            {
-                entangledTile._entangledTile = null;
-                entangledTile.background.color = entangledTile.state.backgroundColor;
-                entangledTile._entangledTile = null;
-            }
-            _entangledTiles.Clear();
-            _entangleModeEvent.Invoke(_entangleMode);
         }
+        _entangleMode = !_entangleMode;
+        foreach (Tile entangledTile in _entangledTiles)
+        {
+            entangledTile._entangledTile = null;
+            entangledTile.background.color = entangledTile.state.backgroundColor;
+            entangledTile._entangledTile = null;
+        }
+        _entangledTiles.Clear();
+        _entangleModeEvent.Invoke(_entangleMode);
     }
 
     public void AddEntangledTile(Tile tile)
@@ -466,6 +494,7 @@ public class TileBoard : MonoBehaviour
             Debug.Log($"Tile ID {_entangledTiles[0].TileID} entangled with tile ID {tile.TileID}");
             _specialMoveEvent.Invoke("Entanglement");
             _entangleMode = false;
+            _tutorialEntangleEvent.Invoke(true);
             _entangleModeEvent.Invoke(_entangleMode);
         }
     }
